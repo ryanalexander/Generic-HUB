@@ -1,0 +1,5 @@
+sql:
+  host: 0.0.0.0
+  user: root
+  pass: Garcia#02
+  database: games
