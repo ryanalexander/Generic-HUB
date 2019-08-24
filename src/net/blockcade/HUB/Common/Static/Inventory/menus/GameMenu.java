@@ -6,6 +6,7 @@ import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
@@ -18,14 +19,14 @@ public class GameMenu {
         item.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
-                p.openInventory(GameMenu.getMenu());
+                p.openInventory(GameMenu.getMenu(p));
             }
         });
 
         return item;
     }
 
-    private static Inventory getMenu(){
+    private static Inventory getMenu(Player player){
         Inventory inventory = Bukkit.createInventory(null,27, Text.format("&7Games Menu"));
 
         int inventory_pos = 10;
@@ -40,6 +41,23 @@ public class GameMenu {
             });
             inventory.setItem(inventory_pos,gameItem.spigot());
             inventory_pos++;
+        }
+        if(Main.Searching.containsKey(Main.GamePlayers.get(player))) {
+            Item cancelSearch = new Item(Material.BARRIER, "&cCancel Search");
+            cancelSearch.setLore(new String[]{"", "&aClicking this will cancel", String.format("&ayour search for &e%s&a.", (Main.Searching.containsKey(Main.GamePlayers.get(player)) ? Main.Searching.get(Main.GamePlayers.get(player)).getGame().getName() : "null")), ""});
+            cancelSearch.setOnClick(new Item.click() {
+                @Override
+                public void run(Player p) {
+                    if (Main.Searching.containsKey(Main.GamePlayers.get(player))) {
+                        Main.Searching.get(Main.GamePlayers.get(player)).stop();
+                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 0.5f);
+                    } else {
+                        p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 0.5f);
+                        p.getOpenInventory().close();
+                    }
+                }
+            });
+            inventory.setItem(inventory.getSize()-1, cancelSearch.spigot());
         }
 
         return inventory;

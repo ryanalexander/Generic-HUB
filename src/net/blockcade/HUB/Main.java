@@ -41,7 +41,7 @@ public class Main extends JavaPlugin {
 
         GamePlayers=new HashMap<>();
         sqlConnection=new SQL(getConfig().getString("sql.host"),3306,getConfig().getString("sql.user"),getConfig().getString("sql.pass"),getConfig().getString("sql.database"));
-        GameSearch.StartSearchHandler(this);
+        new GameSearch(this);
 
         /*
          * Register required events

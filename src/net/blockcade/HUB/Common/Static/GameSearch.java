@@ -14,14 +14,27 @@ import static net.blockcade.HUB.Main.Searching;
 public class GameSearch {
 
     private long searchTime;
+    private boolean stopped=false;
     private GamePlayer player;
 
     private Game game;
+    private JavaPlugin main;
+
+    public GameSearch(JavaPlugin main){
+        this.main=main;
+        StartSearchHandler(main);
+    }
 
     public GameSearch(GamePlayer player, Game game){
         this.player=player;
         this.game=game;
         this.searchTime=1;
+    }
+
+    public void stop(){this.stopped=true;}
+
+    public Game getGame() {
+        return game;
     }
 
     public void poll() {
@@ -37,13 +50,13 @@ public class GameSearch {
     }
 
 
-    public static void StartSearchHandler(JavaPlugin plugin) {
+    public void StartSearchHandler(JavaPlugin plugin) {
         Searching=new HashMap<>();
         new BukkitRunnable(){
             @Override
             public void run() {
                 for(GameSearch search : Searching.values()){
-                    if(search.player.spigot().isOnline()){search.poll();}else{cancel();} }
+                    if(search.player.spigot().isOnline()&&(GameSearch.this.stopped)){search.poll();}else{cancel();} }
             }
         }.runTaskTimer(plugin,0,0);
     }
