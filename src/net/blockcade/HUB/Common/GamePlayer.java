@@ -15,9 +15,10 @@ package net.blockcade.HUB.Common;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
-import net.blockcade.HUB.Common.Static.Game;
+import net.blockcade.HUB.Common.Static.GameServer;
+import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Common.Static.GameSearch;
-import net.blockcade.HUB.Common.Static.Ranks;
+import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.SQL;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -34,6 +35,7 @@ public class GamePlayer {
 
     private PreferenceSettings preferenceSettings;
     private boolean isBuilt=false;
+    private String name;
     private Ranks rank;
     private GameParty party=null;
 
@@ -71,16 +73,17 @@ public class GamePlayer {
      *
      * @param server BungeeCord server in which to send the player to
      */
-    public void sendServer(String server) {
+    public void sendServer(GameServer server) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
-        out.writeUTF(server);
+        out.writeUTF(server.getName());
         player.sendPluginMessage(Main.getPlugin(Main.class), "BungeeCord", out.toByteArray());
     }
 
     public void joinQueue(Game game){
+        if(Main.Searching.containsKey(this)&&Main.Searching.get(this).getGame().equals(game)){return;}
         GameSearch search = new GameSearch(this,game);
-        Main.Searching.remove(this);
+        if(Main.Searching.containsKey(player))Main.Searching.remove(this);
         Main.Searching.put(this,search);
     }
 
@@ -104,6 +107,13 @@ public class GamePlayer {
     }
 
     /**
+     *
+     * @return Player display name (Nickname)
+     */
+    public String getName() {
+        return name;
+    }
+    /**
      * TODO BungeeCord implementation for parties
      * @return Player party, fetched by BungeeCord if updated.
      * @since 5/08/2019
@@ -111,6 +121,16 @@ public class GamePlayer {
     public GameParty getParty() {
         if(!isBuilt)throw new Error("Failed getting party, the specified GamePlayer has not been built.");
         return party;
+    }
+
+    /**
+     *
+     * TODO Add database integration
+     * @param player Target player to check relationship to
+     * @return Weather the two players are friends
+     */
+    public boolean isFriend(GamePlayer player){
+        return true;
     }
 
     /**
@@ -145,6 +165,7 @@ public class GamePlayer {
             ResultSet results = sql.query(String.format("SELECT * FROM `players` WHERE `username`='%s' LIMIT 1;",this.player.getName()));
             try {
                 while(results.next()){
+                    this.name=this.player.getName();
                     this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
                     this.uuid=(UUID.fromString(results.getString("uuid")));
                     this.preferenceSettings=new PreferenceSettings(this);

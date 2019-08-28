@@ -13,10 +13,6 @@
 
 package net.blockcade.HUB.Common.Static;
 
-import net.blockcade.HUB.Common.Static.Game;
-
-import java.util.HashMap;
-
 public class GameServer {
     private int id;
     private String uuid;

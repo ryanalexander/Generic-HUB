@@ -3,3 +3,4 @@ sql:
   user: root
   pass: Garcia#02
   database: games
+server-type: HUB

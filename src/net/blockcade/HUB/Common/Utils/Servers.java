@@ -1,14 +1,32 @@
 package net.blockcade.HUB.Common.Utils;
 
 import net.blockcade.HUB.Common.Static.GameServer;
+import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Main;
 import redis.clients.jedis.Jedis;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
 public class Servers {
+
+    public static HashMap<Game, ArrayList<GameServer>> getAvailableServers() {
+
+        HashMap<Game, ArrayList<GameServer>> servers = new HashMap<>();
+
+        for(GameServer server : getServers().values()){
+            Game game;
+            try {game=Game.valueOf(server.getGame().toUpperCase());}catch(Exception e){continue;}
+            if(!(server.getState().contains("LOBBY"))){continue;}
+            if(server.getPlayercount()>=Game.valueOf(server.getGame().toUpperCase()).getMaxPlayers()){continue;}
+            if(!(servers.containsKey(game)))servers.put(game,new ArrayList<>());
+            System.out.println("Added "+server.getName());
+            servers.get(game).add(server);
+        }
+
+        return servers;
+
+    }
+
     public static HashMap<String, GameServer> getServers() {
         HashMap<String, GameServer> gameServers = new HashMap<>();
 

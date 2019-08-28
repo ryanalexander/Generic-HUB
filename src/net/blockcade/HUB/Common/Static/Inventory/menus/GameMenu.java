@@ -1,6 +1,6 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
-import net.blockcade.HUB.Common.Static.Game;
+import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -27,18 +27,25 @@ public class GameMenu {
     }
 
     private static Inventory getMenu(Player player){
-        Inventory inventory = Bukkit.createInventory(null,27, Text.format("&7Games Menu"));
+        Inventory inventory = Bukkit.createInventory(null,54, Text.format("&7Games Menu"));
 
-        int inventory_pos = 10;
+        int inventory_pos = 12;
 
+        Item games = new Item(Material.BOOKSHELF,"&aMain Games");
+        games.setEnchanted(true);
+        games.setLore(new String[]{"&fOur main games based","off vanilla minecraft."});
+
+        inventory.setItem(9,games.spigot());
         for(Game game : Game.values()){
             Item gameItem = new Item(game.getMaterial(),game.getColor()+game.getName());
             gameItem.setOnClick(new Item.click() {
                 @Override
                 public void run(Player p) {
                     Main.GamePlayers.get(p).joinQueue(game);
+                    p.openInventory(GameMenu.getMenu(p));
                 }
             });
+            gameItem.setLore(game.getDescription().split("\n"));
             inventory.setItem(inventory_pos,gameItem.spigot());
             inventory_pos++;
         }
@@ -48,9 +55,10 @@ public class GameMenu {
             cancelSearch.setOnClick(new Item.click() {
                 @Override
                 public void run(Player p) {
-                    if (Main.Searching.containsKey(Main.GamePlayers.get(player))) {
-                        Main.Searching.get(Main.GamePlayers.get(player)).stop();
+                    if (Main.Searching.containsKey(Main.GamePlayers.get(p))) {
+                        Main.Searching.get(Main.GamePlayers.get(p)).stop();
                         p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 0.5f);
+                        p.getOpenInventory().close();
                     } else {
                         p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 0.5f);
                         p.getOpenInventory().close();

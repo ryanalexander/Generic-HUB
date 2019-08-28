@@ -14,10 +14,13 @@
 package net.blockcade.HUB.Common;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameParty {
 
-    private ArrayList<GamePlayer> players;
+    private ArrayList<GamePlayer> players=new ArrayList<>();
     private GamePlayer leader;
+
+    public boolean hasMember(GamePlayer player){return players.contains(player);}
 
 }

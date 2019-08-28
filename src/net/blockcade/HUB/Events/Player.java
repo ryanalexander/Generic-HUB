@@ -14,10 +14,20 @@
 package net.blockcade.HUB.Events;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.PreferenceSettings;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetics;
 import net.blockcade.HUB.Common.Static.Inventory.menus.GameMenu;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Profile;
+import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
+import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageEvent;
+import org.bukkit.event.entity.FoodLevelChangeEvent;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
@@ -40,6 +50,8 @@ public class Player implements Listener {
         Main.GamePlayers.put(event.getPlayer(),player);
 
         player.spigot().getInventory().setItem(0, GameMenu.getMenuItem().spigot());
+        player.spigot().getInventory().setItem(1, Profile.getMenuItem().spigot());
+        player.spigot().getInventory().setItem(4, Cosmetics.getMenuItem().spigot());
     }
 
     @EventHandler
@@ -47,5 +59,32 @@ public class Player implements Listener {
         // Remove cachedGamePlayer
         if(Main.GamePlayers.containsKey(event.getPlayer()))Main.GamePlayers.remove(event.getPlayer());
     }
+
+    @EventHandler
+    public void PlayerChat(AsyncPlayerChatEvent e){
+        GamePlayer player = Main.GamePlayers.get(e.getPlayer());
+        if(player==null)return;
+        for(org.bukkit.entity.Player p : Bukkit.getOnlinePlayers()){
+            boolean shown = false;
+            GamePlayer target = Main.GamePlayers.get(p);
+            if(target==null)continue;
+            PreferenceSettings preferenceSettings = target.getPreferenceSettings();
+            if(preferenceSettings.getChatVisibility().equals(ChatVisibility.ALL_SHOWN)){shown=true;}
+            if(preferenceSettings.getChatVisibility().equals(ChatVisibility.FRIENDS)){if(target.isFriend(player))shown=true;}
+            if(preferenceSettings.getChatVisibility().equals(ChatVisibility.PARTY)){if(target.getParty().hasMember(player))shown=true;}
+
+            if(shown)target.sendMessage(player.getRank().getColor()+player.getRank().name()+" &r&7"+player.getName()+": "+((player.getRank().getLevel()>=2)?Text.format(e.getMessage()):e.getMessage()));
+        }
+        e.setCancelled(true);
+    }
+
+    /*
+     * Remove Player damage and Health decline
+     */
+    @EventHandler
+    public void PlayerDamage(EntityDamageEvent e){if(e.getEntity().getType().equals(EntityType.PLAYER))e.setCancelled(true);}
+    @EventHandler
+    public void PlayerHunger(FoodLevelChangeEvent e){if(e.getEntity().getType().equals(EntityType.PLAYER))e.setCancelled(true);}
+
 
 }

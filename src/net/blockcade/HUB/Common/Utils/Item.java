@@ -26,6 +26,7 @@
 
 package net.blockcade.HUB.Common.Utils;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -42,6 +43,9 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
+
+import static org.apache.commons.lang.Validate.notNull;
 
 public class Item implements Listener {
     public static HashMap<Item, click> actions = new HashMap<>();
@@ -57,6 +61,13 @@ public class Item implements Listener {
     /*public Item(Game GameCommand){
         this.GameCommand=GameCommand;
     }*/
+
+    public Item (ItemStack item, String name){
+        this.is=item;
+        this.im=item.getItemMeta();
+        this.im.setDisplayName(Text.format(name));
+        im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
+    }
 
     public Item(Material material, String name) {
         this.is = new ItemStack(material);
@@ -163,4 +174,14 @@ public class Item implements Listener {
         }
     }
 
+
+    private static ItemStack itemWithBase64(ItemStack item, String base64) {
+        notNull(item, "item");
+        notNull(base64, "base64");
+
+        UUID hashAsId = new UUID(base64.hashCode(), base64.hashCode());
+        return Bukkit.getUnsafe().modifyItemStack(item,
+                "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
+        );
+    }
 }

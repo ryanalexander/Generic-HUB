@@ -11,7 +11,7 @@
  *  @since 5/8/2019
  */
 
-package net.blockcade.HUB.Common.Static;
+package net.blockcade.HUB.Common.Static.Variables;
 
 public enum Ranks {
     MEMBER(0,"&e"),

@@ -1,23 +1,29 @@
-package net.blockcade.HUB.Common.Static;
+package net.blockcade.HUB.Common.Static.Variables;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
 import org.bukkit.Material;
 
 public enum Game {
-    BED_BATTLES(Material.RED_BED,"Bed Battles","Assist your team in taking over the world. Go island to and destroy beds.","BBW",ChatColor.GOLD),
-    CAPTURE(Material.RED_WOOL, "Capture The Flag","It's capture the flag, if you don't know what that is, kys.", "CTF",ChatColor.RED);
+    BEDBATTLES(Material.RED_BED,"Bed Battles","&fFight to defend your bed and be the last player standing.","BBW",ChatColor.RED,16),
+    CAPTURE(Material.BLUE_BANNER, "Capture The Flag","Capture the enemy team's\nflag three times to win.", "CTF",ChatColor.AQUA,16);
     Material material;
     String name;
     String description;
     String type;
     ChatColor color;
-    Game(Material material, String name, String description, String type, ChatColor color){
+    int MaxPlayers;
+    Game(Material material, String name, String description, String type, ChatColor color, int MaxPlayers){
         this.material=material;
         this.name=name;
         this.description=description;
         this.type=type;
         this.color=color;
+        this.MaxPlayers=MaxPlayers;
+    }
+
+    public int getMaxPlayers() {
+        return MaxPlayers;
     }
 
     public Material getMaterial() {

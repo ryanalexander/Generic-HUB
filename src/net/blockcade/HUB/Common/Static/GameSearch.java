@@ -1,17 +1,21 @@
 package net.blockcade.HUB.Common.Static;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Common.Utils.JavaUtils;
-import net.blockcade.HUB.Main;
+import net.blockcade.HUB.Common.Utils.Servers;
+import org.bukkit.Sound;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.concurrent.TimeUnit;
 
 import static net.blockcade.HUB.Main.Searching;
 
 public class GameSearch {
+
+    public static HashMap<Game, ArrayList<GameServer>> Available_games = new HashMap<>();
 
     private long searchTime;
     private boolean stopped=false;
@@ -29,9 +33,15 @@ public class GameSearch {
         this.player=player;
         this.game=game;
         this.searchTime=1;
+        player.sendMessage(String.format("&aNow searching for &e%s&a!",game.getName()));
     }
 
-    public void stop(){this.stopped=true;}
+    public void stop(){
+        Searching.remove(player);
+        this.stopped=true;
+        player.sendMessage(String.format("&cCancelled search for &e%s&c!",game.getName()));
+        player.sendActionBar(String.format("&cCancelled search for &e%s&c!",game.getName()));
+    }
 
     public Game getGame() {
         return game;
@@ -46,18 +56,38 @@ public class GameSearch {
         String SECONDS_FORMATTED = (SECONDS-(MINUTES*60)<10?("0"+(SECONDS-(MINUTES*60))):SECONDS-(MINUTES*60)+"");
         // MILLISECONDS-(SECONDS*1000)
         String MILLISECOND_FORMATTED = (MILLISECONDS-(SECONDS*1000)<10?"0"+(MILLISECONDS-(SECONDS*1000)):MILLISECONDS-(SECONDS*1000)+"").substring(0,2);
-        player.sendActionBar(String.format("&aSearching for &e%s&a - &e&l%s&a:&e&l%s&a:&e&l%s",game.getName(), MINUTES_FORMATTED,SECONDS_FORMATTED,MILLISECOND_FORMATTED));
+
+        if(Available_games.containsKey(game)&&Available_games.get(game).size()>0){
+            GameServer server = Available_games.get(game).get(0);
+            player.spigot().playSound(player.spigot().getLocation(), Sound.ENTITY_VILLAGER_YES,1f,1f);
+            server.setPlayercount(server.getPlayercount()+1);
+            player.sendActionBar("&aFound game &e- Now Connecting");
+            player.sendServer(server);
+            Searching.remove(player);
+            this.stopped=true;
+        }else {
+            player.sendActionBar(String.format("&aSearching for &e%s&a - &e&l%s&a:&e&l%s&a:&e&l%s",game.getName(), MINUTES_FORMATTED,SECONDS_FORMATTED,MILLISECOND_FORMATTED));
+        }
     }
 
 
     public void StartSearchHandler(JavaPlugin plugin) {
         Searching=new HashMap<>();
         new BukkitRunnable(){
+            int i = 0;
             @Override
             public void run() {
+                i++;
+                if(i==40){
+                    i=0;
+                    // Update server list
+                    Available_games.clear();
+                    Available_games= Servers.getAvailableServers();
+                }
                 for(GameSearch search : Searching.values()){
-                    if(search.player.spigot().isOnline()&&(GameSearch.this.stopped)){search.poll();}else{cancel();} }
+                    if(search.player.spigot().isOnline()&&(!search.stopped)){search.poll();}else{Searching.remove(player);}
+                }
             }
-        }.runTaskTimer(plugin,0,0);
+        }.runTaskTimerAsynchronously(plugin,0,0);
     }
 }
