@@ -6,3 +6,5 @@ main: net.blockcade.HUB.Main
 commands:
   debug:
     description: Testing command, remove
+  fly:
+    description: Toggle flight for players.
