@@ -11,12 +11,13 @@
  *  @since 5/8/2019
  */
 
-package net.blockcade.HUB.Events;
+package net.blockcade.HUB.Common.Events;
 
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.PreferenceSettings;
 import net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetics;
 import net.blockcade.HUB.Common.Static.Inventory.menus.GameMenu;
+import net.blockcade.HUB.Common.Static.Inventory.menus.HUB;
 import net.blockcade.HUB.Common.Static.Inventory.menus.Profile;
 import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
 import net.blockcade.HUB.Common.Utils.Text;
@@ -30,6 +31,8 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 /**
  * This class was created for the soul purpose of having a single place for all Player related events, instead of creating multiple classes.
@@ -47,11 +50,21 @@ public class Player implements Listener {
         player=new GamePlayer(event.getPlayer());
         player.BuildPlayer();
 
+        if(player.getRank().getLevel()<2){
+            event.setJoinMessage(null);
+        }else {
+            event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getName())));
+        }
+
+        player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,99999,2),false);
+        player.spigot().setAllowFlight(player.getPreferenceSettings().isFlight());
+
         Main.GamePlayers.put(event.getPlayer(),player);
 
         player.spigot().getInventory().setItem(0, GameMenu.getMenuItem().spigot());
         player.spigot().getInventory().setItem(1, Profile.getMenuItem().spigot());
         player.spigot().getInventory().setItem(4, Cosmetics.getMenuItem().spigot());
+        player.spigot().getInventory().setItem(8, HUB.getMenuItem().spigot());
     }
 
     @EventHandler

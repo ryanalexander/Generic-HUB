@@ -40,7 +40,7 @@ import static org.bukkit.Bukkit.getServer;
 public class Networking {
 
     private static UUID uuid = UUID.randomUUID();
-    public String serverName;
+    public String serverName="loading";
 
     private String gameState = "DISABLED";
     private String game = "";

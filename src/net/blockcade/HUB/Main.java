@@ -14,8 +14,10 @@
 package net.blockcade.HUB;
 
 import net.blockcade.HUB.Commands.debug;
+import net.blockcade.HUB.Commands.fly;
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameSearch;
+import net.blockcade.HUB.Common.Static.GameServer;
 import net.blockcade.HUB.Common.Utils.*;
 import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
 import net.blockcade.gac.api.Guardian;
@@ -33,10 +35,11 @@ public class Main extends JavaPlugin {
     // GamePlayer cache
     public static HashMap<Player, GamePlayer> GamePlayers;
     public static HashMap<GamePlayer, GameSearch> Searching;
+    public static GameServer server;
     public static ParticleManager particleManager;
     public static JedisPool pool;
+    public static Networking network;
     private static SQL sqlConnection;
-    private static Networking network;
 
     @Override
     public void onEnable() {
@@ -51,7 +54,7 @@ public class Main extends JavaPlugin {
          * Register required events
          */
         PluginManager pm = getServer().getPluginManager();
-        pm.registerEvents(new net.blockcade.HUB.Events.Player(),this);
+        pm.registerEvents(new net.blockcade.HUB.Common.Events.Player(),this);
         pm.registerEvents(new Item(), this);
 
         // BungeeCord Hook
@@ -62,12 +65,13 @@ public class Main extends JavaPlugin {
         network=new Networking(this);
         network.setGame("HUB");
         network.setGameState("LOBBY");
-        //network.init();
+        network.init();
 
         /*
          * Register required commands
          */
         getCommand("debug").setExecutor(new debug());
+        getCommand("fly").setExecutor(new fly());
 
         new BukkitRunnable(){
             @Override
