@@ -26,17 +26,34 @@ public class GameMenu {
         return item;
     }
 
-    private static Inventory getMenu(Player player){
+    public static Inventory getMenu(Player player){
         Inventory inventory = Bukkit.createInventory(null,54, Text.format("&7Games Menu"));
 
         int inventory_pos = 12;
 
         Item games = new Item(Material.BOOKSHELF,"&aMain Games");
+        games.setOnClick(new Item.click() {
+            @Override
+            public void run(Player p) {
+                p.openInventory(GameMenu.getMenu(p));
+            }
+        });
         games.setEnchanted(true);
         games.setLore(new String[]{"&fOur main games based","off vanilla minecraft."});
 
+        Item lobbies = new Item(Material.IRON_BLOCK,"&fLobbies");
+        lobbies.setOnClick(new Item.click() {
+            @Override
+            public void run(Player p) {
+                p.openInventory(HUB.getMenu(p));
+            }
+        });
+        lobbies.setLore(new String[]{"&fTeleport between the","network lobbies."});
+
         inventory.setItem(9,games.spigot());
+        inventory.setItem(18,lobbies.spigot());
         for(Game game : Game.values()){
+            if(game==Game.HUB)continue;
             Item gameItem = new Item(game.getMaterial(),game.getColor()+game.getName());
             gameItem.setOnClick(new Item.click() {
                 @Override

@@ -81,7 +81,6 @@ public class GameSearch {
                 if(i==40){
                     i=0;
                     // Update server list
-                    Available_games.clear();
                     Available_games= Servers.getAvailableServers();
                 }
                 for(GameSearch search : Searching.values()){

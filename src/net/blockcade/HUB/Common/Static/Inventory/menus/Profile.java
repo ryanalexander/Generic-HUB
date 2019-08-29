@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class Profile {
 
@@ -33,7 +34,8 @@ public class Profile {
         /*
          * Categories for Cosmetics
          */
-        Item costumes = new Item(Material.PLAYER_HEAD,"&aCostumes");
+        ItemStack cosmetics_item = Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZDQzZDRiN2FjMjRhMWQ2NTBkZGY3M2JkMTQwZjQ5ZmMxMmQyNzM2ZmMxNGE4ZGMyNWMwZjNmMjlkODVmOGYifX19");
+        Item costumes = new Item(cosmetics_item,"&aCosmetics");
         Item preferences = new Item(Material.COMPARATOR,"&cPreferences");
         Item statistics = new Item(Material.BOOK,"&fStatistics");
 

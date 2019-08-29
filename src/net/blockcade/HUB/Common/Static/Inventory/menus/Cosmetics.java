@@ -1,5 +1,6 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
+import net.blockcade.HUB.Common.Static.Inventory.Manager;
 import net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetic.Particles;
 import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Common.Utils.Item;
@@ -31,20 +32,7 @@ public class Cosmetics {
     private static Inventory getMenu(Player player, String referer){
         Inventory inventory = Bukkit.createInventory(null,45, Text.format("&7Cosmetics"));
 
-        Item profile = new Item(Material.PLAYER_HEAD,player.getName()+"'s Profile");
-        profile.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(Particles.getMenu(p));
-            }
-        });
-
-        Item placeholder = new Item(Material.BLACK_STAINED_GLASS_PANE,"&r");
-        placeholder.setOnClick(new Item.click() {
-            @Override
-            public void run(Player param1Player) {}
-        });
-        for(int i=9;i<18;i++){ inventory.setItem(i,placeholder.spigot()); }
+        Manager.addProfileHeader(inventory,Main.GamePlayers.get(player));
 
         /*
          * Categories for Cosmetics

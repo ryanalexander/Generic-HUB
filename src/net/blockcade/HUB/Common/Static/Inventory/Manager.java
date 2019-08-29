@@ -24,7 +24,7 @@ public class Manager {
         friends.setLore(new String[]{"&7This menu contains","&7a list of all your friends"});
 
         Item profile = new Item(Material.PLAYER_HEAD,"&eYour Profile");
-        profile.setLore(new String[]{"&7Rank: &e"+player.getRank().getFormatted(),"&7Level: &e0"});
+        profile.setLore(new String[]{"&7Rank: &e"+player.getRank().getFormatted(),"&7Level: &e"+player.getLevel()});
 
         Item party = new Item(party_item,"&eParty");
         party.setLore(new String[]{"&7This menu contains","&7Party Management Tools"});
