@@ -25,6 +25,7 @@ public enum Ranks {
     private int level;
     private String rank;
     public int getLevel() {return this.level;}
+    public String getFormatted() {return this.getColor()+this.name();}
     public String getColor() {return this.rank;}
     private Ranks(int level,String rank){this.rank = rank.toUpperCase();this.level=level;}
 }

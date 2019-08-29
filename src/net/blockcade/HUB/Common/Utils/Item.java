@@ -90,6 +90,8 @@ public class Item implements Listener {
         this.im.setDisplayName(Text.format(name));
     }
 
+    public void setTexture(String base64){this.is=itemWithBase64(this.is,base64);}
+
     public void setMaterial(Material mat) {
         this.is.setType(mat);
     }
@@ -175,7 +177,7 @@ public class Item implements Listener {
     }
 
 
-    private static ItemStack itemWithBase64(ItemStack item, String base64) {
+    public static ItemStack itemWithBase64(ItemStack item, String base64) {
         notNull(item, "item");
         notNull(base64, "base64");
 

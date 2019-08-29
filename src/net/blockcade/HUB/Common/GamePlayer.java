@@ -36,6 +36,7 @@ public class GamePlayer {
     private PreferenceSettings preferenceSettings;
     private boolean isBuilt=false;
     private String name;
+    private int level;
     private Ranks rank;
     private GameParty party=null;
 
@@ -108,6 +109,14 @@ public class GamePlayer {
 
     /**
      *
+     * @return Player network wide level
+     */
+    public int getLevel() {
+        return level;
+    }
+
+    /**
+     *
      * @return Player display name (Nickname)
      */
     public String getName() {
@@ -167,6 +176,7 @@ public class GamePlayer {
                 while(results.next()){
                     this.name=this.player.getName();
                     this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
+                    this.level=666;
                     this.uuid=(UUID.fromString(results.getString("uuid")));
                     this.preferenceSettings=new PreferenceSettings(this);
                 }

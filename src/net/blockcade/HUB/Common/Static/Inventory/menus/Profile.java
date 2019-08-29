@@ -1,7 +1,9 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
+import net.blockcade.HUB.Common.Static.Inventory.Manager;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
+import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,12 +28,7 @@ public class Profile {
     private static Inventory getMenu(Player player){
         Inventory inventory = Bukkit.createInventory(null,45, Text.format("&7My Profile"));
 
-        Item placeholder = new Item(Material.BLACK_STAINED_GLASS_PANE,"&r");
-        placeholder.setOnClick(new Item.click() {
-            @Override
-            public void run(Player param1Player) {}
-        });
-        for(int i=9;i<17;i++){ inventory.setItem(i,placeholder.spigot()); }
+        Manager.addProfileHeader(inventory, Main.GamePlayers.get(player));
 
         /*
          * Categories for Cosmetics
@@ -40,13 +37,13 @@ public class Profile {
         Item preferences = new Item(Material.COMPARATOR,"&cPreferences");
         Item statistics = new Item(Material.BOOK,"&fStatistics");
 
-        costumes.setLore(new String[]{"&7This menu contains all your","&7lobby related cosmetics","","Sub Menus:","&eParticles&7, Heads&7, &eCostumes&7, &ePets&7, &eMorphs"});
+        costumes.setLore(new String[]{"&7This menu contains all your","&7lobby related cosmetics","","Sub Menus:","&eParticles&7, &eHeads&7, &eCostumes&7, &ePets&7, &eMorphs"});
         preferences.setLore(new String[]{"&7This menu contains all your","&7network wide preferences","","Sub Menus:","&ePrivacy&7, &eCensorship&7, &eVisuals&7"});
         statistics.setLore(new String[]{"&7This menu contains all your","&7network wide statistics","","Sub Menus:","&ePlayer Search&7"});
 
-        inventory.setItem(29,costumes.spigot());
-        inventory.setItem(30,preferences.spigot());
-        inventory.setItem(31,statistics.spigot());
+        inventory.setItem(30,costumes.spigot());
+        inventory.setItem(31,preferences.spigot());
+        inventory.setItem(32,statistics.spigot());
 
         return inventory;
     }

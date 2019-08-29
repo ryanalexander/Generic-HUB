@@ -5,7 +5,7 @@ import org.bukkit.Color;
 import org.bukkit.Material;
 
 public enum Game {
-    BEDBATTLES(Material.RED_BED,"Bed Battles","&fFight to defend your bed and be the last player standing.","BBW",ChatColor.RED,16),
+    BEDBATTLES(Material.RED_BED,"Bed Battles","&fFight to defend your bed\nand be the last player standing.","BBW",ChatColor.RED,16),
     CAPTURE(Material.BLUE_BANNER, "Capture The Flag","Capture the enemy team's\nflag three times to win.", "CTF",ChatColor.AQUA,16);
     Material material;
     String name;
