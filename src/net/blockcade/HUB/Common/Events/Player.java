@@ -63,8 +63,8 @@ public class Player implements Listener {
             event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getName())));
         }
 
-        player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,99999,2),false);
-        player.spigot().setAllowFlight((player.getRank().getLevel()<2&&player.getPreferenceSettings().isFlight()));
+        player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,99999,1),false);
+        player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
 
         player.spigot().playSound(player.spigot().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,1);
 

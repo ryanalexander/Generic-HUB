@@ -1,6 +1,7 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
 import net.blockcade.HUB.Common.Static.Inventory.Manager;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Censorship;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -38,7 +39,7 @@ public class PreferencesMenu {
         /*
          * Categories for Cosmetics
          */
-        Item cosmetics = new Item(CosmeticsMenu.getMenuItem().spigot(),"&aCosmetics");
+        Item censorship = new Item(Censorship.getMenuItem().spigot(),"&fCensorship");
         Item preferences = new Item(Material.COMPARATOR,"&cPreferences");
         Item statistics = new Item(Material.BOOK,"&fStatistics");
 
