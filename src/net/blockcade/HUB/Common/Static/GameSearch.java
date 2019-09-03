@@ -48,6 +48,8 @@ public class GameSearch {
     }
 
     public void poll() {
+        if(!player.spigot().isOnline()){this.stopped=true;this.stop();return;}
+
         searchTime=searchTime+50;
         long MINUTES = JavaUtils.FormatMS(searchTime, JavaUtils.TimeUnit.MINUTE);
         long SECONDS = JavaUtils.FormatMS(searchTime, JavaUtils.TimeUnit.SECOND);

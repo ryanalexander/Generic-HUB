@@ -15,14 +15,16 @@ package net.blockcade.HUB.Common.Events;
 
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.PreferenceSettings;
-import net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetics;
+import net.blockcade.HUB.Common.Static.Inventory.menus.CosmeticsMenu;
 import net.blockcade.HUB.Common.Static.Inventory.menus.GameMenu;
-import net.blockcade.HUB.Common.Static.Inventory.menus.HUB;
-import net.blockcade.HUB.Common.Static.Inventory.menus.Profile;
+import net.blockcade.HUB.Common.Static.Inventory.menus.HubMenu;
+import net.blockcade.HUB.Common.Static.Inventory.menus.ProfileMenu;
 import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
+import org.bukkit.Sound;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,11 +43,16 @@ public class Player implements Listener {
 
     @EventHandler
     public void PlayerJoin(PlayerJoinEvent event){
+        event.getPlayer().teleport(event.getPlayer().getLocation().getWorld().getSpawnLocation());
+        event.getPlayer().getActivePotionEffects().clear();
 
         GamePlayer player;
 
         // Check if GamePlayer already exists (If it does, something went wrong!)
         if(Main.GamePlayers.containsKey(event.getPlayer()))Main.GamePlayers.remove(event.getPlayer());
+
+        event.getPlayer().setPlayerListHeader("&fWelcome to &d&lBlockcade Games&f!");
+        event.getPlayer().setPlayerListHeaderFooter(Text.format("&fWelcome to &d&lBlockcade Games"),Text.format(String.format("&fConnected to &a%s&f!",Main.network.serverName)));
 
         player=new GamePlayer(event.getPlayer());
         player.BuildPlayer();
@@ -57,14 +64,25 @@ public class Player implements Listener {
         }
 
         player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,99999,2),false);
-        player.spigot().setAllowFlight(player.getPreferenceSettings().isFlight());
+        player.spigot().setAllowFlight((player.getRank().getLevel()<2&&player.getPreferenceSettings().isFlight()));
+
+        player.spigot().playSound(player.spigot().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,1);
+
+        event.getPlayer().setLevel(player.getLevel());
+
+        event.getPlayer().setFoodLevel(20);
+        event.getPlayer().setHealth(20);
+        event.getPlayer().setGameMode(GameMode.ADVENTURE);
+
 
         Main.GamePlayers.put(event.getPlayer(),player);
 
+        player.spigot().getInventory().clear();
+
         player.spigot().getInventory().setItem(0, GameMenu.getMenuItem().spigot());
-        player.spigot().getInventory().setItem(1, Profile.getMenuItem().spigot());
-        player.spigot().getInventory().setItem(4, Cosmetics.getMenuItem().spigot());
-        player.spigot().getInventory().setItem(8, HUB.getMenuItem().spigot());
+        player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(player.spigot()).spigot());
+        player.spigot().getInventory().setItem(4, CosmeticsMenu.getMenuItem().spigot());
+        player.spigot().getInventory().setItem(8, HubMenu.getMenuItem().spigot());
     }
 
     @EventHandler
@@ -86,7 +104,7 @@ public class Player implements Listener {
             if(preferenceSettings.getChatVisibility().equals(ChatVisibility.FRIENDS)){if(target.isFriend(player))shown=true;}
             if(preferenceSettings.getChatVisibility().equals(ChatVisibility.PARTY)){if(target.getParty().hasMember(player))shown=true;}
 
-            if(shown)target.sendMessage(player.getRank().getColor()+player.getRank().name()+" &r&7"+player.getName()+": "+((player.getRank().getLevel()>=2)?Text.format(e.getMessage()):e.getMessage()));
+            if(shown)p.sendMessage(Text.format(player.getRank().getColor()+player.getRank().name()+" &r&7"+player.getName()+": ")+((player.getRank().getLevel()>=2)?Text.format(e.getMessage()):e.getMessage()));
         }
         e.setCancelled(true);
     }

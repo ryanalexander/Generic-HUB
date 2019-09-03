@@ -8,11 +8,12 @@ import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 
-public class HUB {
+public class HubMenu {
+
+    private static int[] avalible_slots = new int[]{11,12,13,14,15,16,20,21,22,23,24,25,29,30,31,32,33,34,38,39,40,41,42,43,47,48,49,50,51,52};
 
     public static Item getMenuItem() {
         Item item = new Item(Game.HUB.getMaterial(),"&fLobby Menu &7(Right Click)");
@@ -21,7 +22,7 @@ public class HUB {
         item.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
-                p.openInventory(HUB.getMenu(p));
+                p.openInventory(HubMenu.getMenu(p));
             }
         });
 
@@ -31,36 +32,15 @@ public class HUB {
     public static Inventory getMenu(Player player){
         Inventory inventory = Bukkit.createInventory(null,54, Text.format("&7Lobby Menu"));
 
-        int inventory_pos = 12;
+        int inventory_pos = 0;
 
-        Item games = new Item(Material.BOOKSHELF,"&fMain Games");
-        games.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(GameMenu.getMenu(p));
-            }
-        });
-        games.setLore(new String[]{"&fOur main games based","off vanilla minecraft."});
-
-        Item lobbies = new Item(Material.IRON_BLOCK,"&aLobbies");
-        lobbies.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(HUB.getMenu(p));
-            }
-        });
-        lobbies.setEnchanted(true);
-        lobbies.setLore(new String[]{"&fTeleport between the","network lobbies."});
-
-        inventory.setItem(9,games.spigot());
-        inventory.setItem(18,lobbies.spigot());
+        inventory.setItem(9,GameMenu.getMenuItem().spigot());
+        inventory.setItem(18, HubMenu.getMenuItem().spigot());
 
         if(GameSearch.Available_games.containsKey(Game.HUB)) {
             for (GameServer server : GameSearch.Available_games.get(Game.HUB)) {
-                Item gameItem = new Item(Game.HUB.getMaterial(), (Main.network.serverName.equals(server.getName()) ? "&a" : "&f") + server.getName());
-                if (Main.network.serverName.equals(server.getName())) {
-                    gameItem.setEnchanted(true);
-                }
+                if(inventory_pos>avalible_slots.length)continue;
+                Item gameItem = new Item((Main.network.serverName.equals(server.getName()) ? Material.LIME_STAINED_GLASS_PANE : Material.WHITE_STAINED_GLASS_PANE), (Main.network.serverName.equals(server.getName()) ? "&a" : "&f") + server.getName());
                 gameItem.setOnClick(new Item.click() {
                     @Override
                     public void run(Player p) {
@@ -69,7 +49,7 @@ public class HUB {
                     }
                 });
                 gameItem.setLore(new String[]{"", "Players: " + server.getPlayercount()});
-                inventory.setItem(inventory_pos, gameItem.spigot());
+                inventory.setItem(avalible_slots[inventory_pos], gameItem.spigot());
                 inventory_pos++;
             }
         }else {

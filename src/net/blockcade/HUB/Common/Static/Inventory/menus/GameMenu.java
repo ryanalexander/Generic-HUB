@@ -31,27 +31,8 @@ public class GameMenu {
 
         int inventory_pos = 12;
 
-        Item games = new Item(Material.BOOKSHELF,"&aMain Games");
-        games.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(GameMenu.getMenu(p));
-            }
-        });
-        games.setEnchanted(true);
-        games.setLore(new String[]{"&fOur main games based","off vanilla minecraft."});
-
-        Item lobbies = new Item(Material.IRON_BLOCK,"&fLobbies");
-        lobbies.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(HUB.getMenu(p));
-            }
-        });
-        lobbies.setLore(new String[]{"&fTeleport between the","network lobbies."});
-
-        inventory.setItem(9,games.spigot());
-        inventory.setItem(18,lobbies.spigot());
+        inventory.setItem(9,GameMenu.getMenuItem().spigot());
+        inventory.setItem(18, HubMenu.getMenuItem().spigot());
         for(Game game : Game.values()){
             if(game==Game.HUB)continue;
             Item gameItem = new Item(game.getMaterial(),game.getColor()+game.getName());

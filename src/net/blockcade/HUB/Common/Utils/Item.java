@@ -33,12 +33,15 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -129,31 +132,57 @@ public class Item implements Listener {
         void run(Player param1Player);
     }
 
-    @EventHandler
-    public void EntityInteract(PlayerInteractEvent e) {
-        for (Map.Entry<Item, click> is : actions.entrySet()) {
-            if (is.getKey().spigot().equals(e.getItem())) {
-                e.setCancelled(true);
-                if (is.getValue() != null)
-                    is.getValue().run(e.getPlayer());
-                return;
-            }
-        }
-    }
 
     @EventHandler
-    public void InventoryClickEvent(InventoryClickEvent e) {
-        /**
-         * Ignore armor slots
-         */
-        if (e.getSlot() > 99) e.setCancelled(true);
-        for (Map.Entry<Item, click> is : actions.entrySet()) {
-            if (is.getKey().spigot().equals(e.getCurrentItem())) {
-                e.setCancelled(true);
-                if (is.getValue() != null)
-                    is.getValue().run((Player) e.getWhoClicked());
-                return;
+    public void EntityInteract(PlayerInteractEvent e){
+        boolean done = false;
+        if(!(e.getHand().equals(EquipmentSlot.HAND)))return;
+        try {
+            for (Map.Entry<Item, Item.click> is : actions.entrySet()) {
+                if(!(done)&&is.getKey().spigot().getType().equals(Material.PLAYER_HEAD)){
+                    if(e.getItem()==null)continue;
+                    if(isSimilarHead(is.getKey().spigot(),e.getItem())){
+                        if(is.getValue()!=null)
+                            is.getValue().run((Player)e.getPlayer());
+                        e.setCancelled(true);
+                        done=true;
+                    }
+                }else if(!(done)&&is.getKey().spigot().equals(e.getItem())){
+                    if(is.getValue()!=null)
+                        is.getValue().run((Player)e.getPlayer());
+                    e.setCancelled(true);
+                    done=true;
+                }
             }
+        }catch (Exception ex){
+            return;
+        }
+    }
+    @EventHandler
+    public void InventoryClickEvent(InventoryClickEvent e) {
+        boolean done = false;
+        try {
+            for(Item item : actions.keySet()){
+                click c = actions.get(item);
+                if(done)return;
+                if(item.spigot().getType().equals(Material.PLAYER_HEAD)){
+                    if(e.getCurrentItem()==null)continue;
+                    if(!(e.getClick().equals(ClickType.LEFT)))return;
+                    if(isSimilarHead(item.spigot(),e.getCurrentItem())){
+                        e.setCancelled(true);
+                        if(c!=null)
+                            c.run((Player)e.getWhoClicked());
+                        done=true;
+                    }
+                }else if(item.spigot().equals(e.getCurrentItem())){
+                    e.setCancelled(true);
+                    if(c!=null)
+                        c.run((Player)e.getWhoClicked());
+                    done=true;
+                }
+            }
+        }catch(Exception ex){
+            ex.printStackTrace();
         }
     }
 
@@ -185,5 +214,20 @@ public class Item implements Listener {
         return Bukkit.getUnsafe().modifyItemStack(item,
                 "{SkullOwner:{Id:\"" + hashAsId + "\",Properties:{textures:[{Value:\"" + base64 + "\"}]}}}"
         );
+    }
+    public static boolean isSimilarHead(ItemStack is1, ItemStack is2) {
+        if (is1.getType() == is2.getType() &&
+                is1.getDurability() == is2.getDurability() &&
+                is1.hasItemMeta() == is2.hasItemMeta()) {
+                SkullMeta im1 = (SkullMeta) is1.getItemMeta();
+                SkullMeta im2 = (SkullMeta) is2.getItemMeta();
+                if (im1.getDisplayName().equals(im2.getDisplayName())) {
+                    if (im1.hasLore() == im2.hasLore()&&im1.getLore().equals(im2.getLore())) {
+                        Bukkit.broadcastMessage("Detected similar. And exact");
+                        return true;
+                    }
+                }
+            }
+        return false;
     }
 }

@@ -22,10 +22,13 @@ import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.SQL;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.UUID;
 
 public class GamePlayer {
@@ -40,11 +43,16 @@ public class GamePlayer {
     private Ranks rank;
     private GameParty party=null;
 
+    private ArrayList<GamePlayer> friends = new ArrayList<>();
+    private long friends_last_fetch = 0;
+
     /**
      *
      * @param player Bukkit Player to be resolved from SQL Database.
      */
-    public GamePlayer(Player player){this.player=player;}
+    public GamePlayer(Player player){this.player=player;this.name=player.getName();}
+    public GamePlayer(String player){this.name=player;}
+    public GamePlayer(UUID uuid){this.uuid=uuid;}
 
     /**
      * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-0] )
@@ -139,7 +147,36 @@ public class GamePlayer {
      * @return Weather the two players are friends
      */
     public boolean isFriend(GamePlayer player){
-        return true;
+        return getFriends().contains(player);
+    }
+
+    public ArrayList<GamePlayer> getFriends(){
+        ArrayList<GamePlayer> friends = new ArrayList<>();
+
+        if(((friends_last_fetch-Calendar.getInstance().getTimeInMillis())<60000&&friends_last_fetch!=0)){
+            return this.friends;
+        }
+        friends_last_fetch=Calendar.getInstance().getTimeInMillis();
+        SQL sql = Main.getSqlConnection();
+        if(sql.isInitilized()){
+            ResultSet results = sql.query(String.format("SELECT * FROM `relationships` WHERE `player`='%s' LIMIT 25;",this.getUuid()));
+            try {
+                while(results.next()){
+                    GamePlayer player = new GamePlayer(UUID.fromString(results.getString("target")));
+                    player.BuildPlayer();
+                    friends.add(player);
+                }
+            }catch (SQLException e){
+                System.out.println("| ---------------------------- |");
+                System.out.println("|  This error was posted by GamePlayer.java getFriends");
+                e.printStackTrace();
+                System.out.println("| ---------------------------- |");
+            }
+        }else {
+            throw new Error("SQL server is not initialized, failed to fetch FriendList");
+        }
+        this.friends=friends;
+        return friends;
     }
 
     /**
@@ -171,14 +208,17 @@ public class GamePlayer {
     public void BuildPlayer() {
         SQL sql = Main.getSqlConnection();
         if(sql.isInitilized()){
-            ResultSet results = sql.query(String.format("SELECT * FROM `players` WHERE `username`='%s' LIMIT 1;",this.player.getName()));
+            String query = "";
+            if(this.name!=null)query=String.format("SELECT * FROM `players` WHERE `username`='%s' LIMIT 1;",this.name);
+            if(query.equals("")&&this.uuid!=null)query=String.format("SELECT * FROM `players` WHERE `uuid`='%s' LIMIT 1;",this.uuid);
+            ResultSet results = sql.query(query);
             try {
                 while(results.next()){
-                    this.name=this.player.getName();
+                    this.name=results.getString("username");
                     this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
-                    this.level=666;
+                    this.level=results.getInt("level");
                     this.uuid=(UUID.fromString(results.getString("uuid")));
-                    this.preferenceSettings=new PreferenceSettings(this);
+                    if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
                 }
                 this.isBuilt=true;
                 return;

@@ -25,17 +25,18 @@ public class Rings extends ParticleEffect {
 
     // Changes nothing rn
     public Rings(Player player){
-        target=player;new ParticleEffect(5L, Particle.FLAME,player);
+        target=player;new ParticleEffect(20L, Particle.FLAME,player);
     }
 
     public void doEffect() {
         if(frame>=360)frame=0;
-        Location loc = getTarget().getLocation();
+        frame++;
+        Location loc = getTarget().getLocation().add(0,2,0);
         double x;
         double z;
         x = loc.getX() + Math.cos(frame);
         z = loc.getZ() + Math.sin(frame);
-        loc.getWorld().spawnParticle(Particle.FLAME, new Location(loc.getWorld(), x,loc.getY(), z, Float.valueOf(loc.getYaw() + ""), Float.valueOf(loc.getPitch() + "")), 1, 0, 0, 0, 0);
+        loc.getWorld().spawnParticle(Particle.FLAME, new Location(loc.getWorld(), x,loc.getY(), z, loc.getYaw(), loc.getPitch()), 1, 0, 0, 0, 0);
     }
 
     private Vector rotateAroundAxisX(Vector v, double cos, double sin) {

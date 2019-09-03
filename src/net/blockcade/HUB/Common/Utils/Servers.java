@@ -19,7 +19,6 @@ public class Servers {
             if(!(server.getState().contains("LOBBY"))){continue;}
             if(server.getPlayercount()>=Game.valueOf(server.getGame().toUpperCase()).getMaxPlayers()){continue;}
             if(!(servers.containsKey(game)))servers.put(game,new ArrayList<>());
-            System.out.println("Added "+server.getName());
             servers.get(game).add(server);
         }
 
@@ -39,6 +38,7 @@ public class Servers {
                 String uuid = args[1];
                 String field = args[2];
                 String data = jedis.get(argument);
+                if(data==null||data.equals("null")){continue;}
                 GameServer server;
                 if(gameServers.containsKey(uuid)){server=gameServers.get(uuid);}else{server=new GameServer(uuid);gameServers.put(uuid,server);}
 

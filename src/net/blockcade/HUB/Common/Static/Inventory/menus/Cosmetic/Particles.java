@@ -1,19 +1,24 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetic;
 
 
+import net.blockcade.HUB.Common.Static.Inventory.Manager;
+import net.blockcade.HUB.Common.Static.Inventory.menus.CosmeticsMenu;
 import net.blockcade.HUB.Common.Utils.Item;
+import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
 import net.blockcade.HUB.Common.Utils.Text;
+import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class Particles {
 
     public static Item getMenuItem() {
-        Item item = new Item(Material.NETHER_STAR,"&aCosmetics &7(Right Click)");
+        Item item = new Item(Material.BLAZE_POWDER,"&eParticle Effects");
 
-        item.setLore(new String[]{"","&7Click to open Cosmetics menu",""});
+        item.setLore(new String[]{"","&7Browse the range of Particle Effects",""});
         item.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
@@ -24,27 +29,29 @@ public class Particles {
         return item;
     }
 
-    public static Inventory getMenu(Player player){
+    private static Inventory getMenu(Player player){
         Inventory inventory = Bukkit.createInventory(null,54, Text.format("&7Particles"));
 
-        /*
-         * Categories for Cosmetics
-         */
-        Item particles = new Item(Material.BLAZE_POWDER,"&eParticle Effects");
-        Item heads = new Item(Material.CREEPER_HEAD,"&eHeads");
-        Item costumes = new Item(Material.DIAMOND_CHESTPLATE,"&eCostumes");
-        Item drinks = new Item(Material.POTION,"&eDrinks");
-        Item pets = new Item(Material.GHAST_SPAWN_EGG,"&ePets");
-        Item secondaries = new Item(Material.BOW,"&eSecondary Items");
-        Item morphs = new Item(Material.LEATHER,"&eMorphs");
+        Manager.addProfileHeader(inventory, Main.GamePlayers.get(player));
 
-        inventory.setItem(10,particles.spigot());
-        inventory.setItem(12,heads.spigot());
-        inventory.setItem(14,costumes.spigot());
-        inventory.setItem(16,drinks.spigot());
-        inventory.setItem(29,pets.spigot());
-        inventory.setItem(31,secondaries.spigot());
-        inventory.setItem(33,morphs.spigot());
+        Item back = new Item(Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0="),"&eBack");
+        back.setOnClick(new Item.click() {
+            @Override
+            public void run(Player p) {
+                p.openInventory(CosmeticsMenu.getMenu(p,""));
+            }
+        });
+        inventory.setItem(0,back.spigot());
+
+        Item rings = new Item(Material.FIRE_CHARGE,"&6Rings");
+        rings.setOnClick(new Item.click() {
+            @Override
+            public void run(Player p) {
+                Main.particleManager.setParticle(p, ParticleManager.ParticleType.RINGS);
+            }
+        });
+
+        inventory.setItem(21,rings.spigot());
 
         return inventory;
     }

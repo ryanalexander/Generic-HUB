@@ -15,7 +15,7 @@ public class fly implements CommandExecutor {
         if(!(sender instanceof Player))return false;
         GamePlayer player = Main.GamePlayers.get(sender);
 
-        if(player.getLevel()<1){player.sendMessage("&cYou must be "+ Ranks.MEGA.getFormatted()+"&c or above to use that command.");return false;}
+        if(player.getRank().getLevel()<=1){player.sendMessage("&cYou must be "+ Ranks.MEGA.getFormatted()+"&c or above to use that command.");return false;}
 
         if(player.getPreferenceSettings().isFlight()){
             player.sendMessage("&cYou have now disabled flying.");
