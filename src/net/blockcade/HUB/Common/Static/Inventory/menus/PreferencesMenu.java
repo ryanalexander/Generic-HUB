@@ -43,7 +43,7 @@ public class PreferencesMenu {
         Item preferences = new Item(Material.COMPARATOR,"&cPreferences");
         Item statistics = new Item(Material.BOOK,"&fStatistics");
 
-        cosmetics.setLore(new String[]{"&7This menu contains all your","&7lobby related cosmetics","","Sub Menus:","&eParticles&7, &eHeads&7, &eCostumes&7, &ePets&7, &eMorphs"});
+        censorship.setLore(new String[]{"&7This menu contains all your","&7lobby related cosmetics","","Sub Menus:","&eParticles&7, &eHeads&7, &eCostumes&7, &ePets&7, &eMorphs"});
         preferences.setLore(new String[]{"&7This menu contains all your","&7network wide preferences","","Sub Menus:","&ePrivacy&7, &eCensorship&7, &eVisuals&7"});
         statistics.setLore(new String[]{"&7This menu contains all your","&7network wide statistics","","Sub Menus:","&ePlayer Search&7"});
 

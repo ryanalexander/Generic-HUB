@@ -50,7 +50,7 @@ public class Main extends JavaPlugin {
         new GameSearch(this);
         particleManager=new ParticleManager(this);
 
-                /*
+        /*
          * Register required events
          */
         PluginManager pm = getServer().getPluginManager();

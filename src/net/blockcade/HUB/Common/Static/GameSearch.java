@@ -48,7 +48,7 @@ public class GameSearch {
     }
 
     public void poll() {
-        if(!player.spigot().isOnline()){this.stopped=true;this.stop();return;}
+        if(!player.spigot().isOnline()){this.stopped=true;Searching.remove(player);return;}
 
         searchTime=searchTime+50;
         long MINUTES = JavaUtils.FormatMS(searchTime, JavaUtils.TimeUnit.MINUTE);
