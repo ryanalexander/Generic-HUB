@@ -10,5 +10,6 @@
     <orderEntry type="library" name="spigot-1.14.4" level="application" />
     <orderEntry type="library" exported="" name="redis.clients:jedis:3.1.0" level="application" />
     <orderEntry type="module" module-name="Guardian Anti-Cheat" />
+    <orderEntry type="library" name="NoteBlockAPI-1.4.4" level="application" />
   </component>
 </module>

@@ -223,7 +223,6 @@ public class Item implements Listener {
                 SkullMeta im2 = (SkullMeta) is2.getItemMeta();
                 if (im1.getDisplayName().equals(im2.getDisplayName())) {
                     if (im1.hasLore() == im2.hasLore()&&im1.getLore().equals(im2.getLore())) {
-                        Bukkit.broadcastMessage("Detected similar. And exact");
                         return true;
                     }
                 }

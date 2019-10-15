@@ -45,7 +45,6 @@ public class FriendsMenu {
                 for(GamePlayer friend : friends){
                     ItemStack is = new ItemStack(Material.PLAYER_HEAD);
                     SkullMeta sm = (SkullMeta)is.getItemMeta();
-                    sm.setOwner(friend.getName());
                     sm.setOwningPlayer(Bukkit.getOfflinePlayer(friend.getUuid()));
                     is.setItemMeta(sm);
                     Item item = new Item(is,friend.getName());

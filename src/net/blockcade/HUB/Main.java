@@ -13,6 +13,7 @@
 
 package net.blockcade.HUB;
 
+import com.xxmicloxx.NoteBlockAPI.NoteBlockAPI;
 import net.blockcade.HUB.Commands.debug;
 import net.blockcade.HUB.Commands.fly;
 import net.blockcade.HUB.Common.GamePlayer;
@@ -21,6 +22,7 @@ import net.blockcade.HUB.Common.Static.GameServer;
 import net.blockcade.HUB.Common.Utils.*;
 import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
 import net.blockcade.gac.api.Guardian;
+import net.blockcade.testing.WingAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -36,6 +38,7 @@ public class Main extends JavaPlugin {
     public static HashMap<Player, GamePlayer> GamePlayers;
     public static HashMap<GamePlayer, GameSearch> Searching;
     public static GameServer server;
+    public static WingAPI wingAPI;
     public static ParticleManager particleManager;
     public static JedisPool pool;
     public static Networking network;
@@ -48,6 +51,7 @@ public class Main extends JavaPlugin {
         GamePlayers=new HashMap<>();
         sqlConnection=new SQL(getConfig().getString("sql.host"),3306,getConfig().getString("sql.user"),getConfig().getString("sql.pass"),getConfig().getString("sql.database"));
         new GameSearch(this);
+        wingAPI=new WingAPI(this);
         particleManager=new ParticleManager(this);
 
         /*
