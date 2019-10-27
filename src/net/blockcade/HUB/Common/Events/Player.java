@@ -45,26 +45,31 @@ public class Player implements Listener {
     public void PlayerJoin(PlayerJoinEvent event){
         event.getPlayer().teleport(event.getPlayer().getLocation().getWorld().getSpawnLocation());
         event.getPlayer().getActivePotionEffects().clear();
+        event.setJoinMessage(null);
 
         GamePlayer player;
 
         // Check if GamePlayer already exists (If it does, something went wrong!)
         if(Main.GamePlayers.containsKey(event.getPlayer()))Main.GamePlayers.remove(event.getPlayer());
-
-        event.getPlayer().setPlayerListHeader("&fWelcome to &d&lBlockcade Games&f!");
         event.getPlayer().setPlayerListHeaderFooter(Text.format("&fWelcome to &d&lBlockcade Games"),Text.format(String.format("&fConnected to &a%s&f!",Main.network.serverName)));
 
         player=new GamePlayer(event.getPlayer());
-        player.BuildPlayer();
+        new Thread() {
+            @Override
+            public void run() {
+                player.BuildPlayer();
+                if(!player.isBuilt()){
+                    player.spigot().kickPlayer(Text.format("&cAn error has occurred in the connection."));
+                    return;
+                }
+                if(player.getRank().getLevel()>=2){
+                    event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getName())));
+                }
+                player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
+            }
+        }.start();
 
-        if(player.getRank().getLevel()<2){
-            event.setJoinMessage(null);
-        }else {
-            event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getName())));
-        }
-
-        player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,99999,1),false);
-        player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
+        player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,Integer.MAX_VALUE,1),false);
 
         player.spigot().playSound(player.spigot().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,1);
 

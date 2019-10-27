@@ -15,14 +15,14 @@ package net.blockcade.HUB.Common;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import net.blockcade.HUB.Common.Static.GameSearch;
 import net.blockcade.HUB.Common.Static.GameServer;
 import net.blockcade.HUB.Common.Static.Variables.Game;
-import net.blockcade.HUB.Common.Static.GameSearch;
 import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.SQL;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
-import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
@@ -50,12 +50,12 @@ public class GamePlayer {
      *
      * @param player Bukkit Player to be resolved from SQL Database.
      */
-    public GamePlayer(Player player){this.player=player;this.name=player.getName();}
+    public GamePlayer(Player player){this.player=player;this.name=player.getName();this.uuid=player.getUniqueId();}
     public GamePlayer(String player){this.name=player;}
     public GamePlayer(UUID uuid){this.uuid=uuid;}
 
     /**
-     * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-0] )
+     * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-o] )
      * sent by Text Chat
      * @param message non formatted message to be sent to player
      * @since 5/08/2019
@@ -63,7 +63,7 @@ public class GamePlayer {
     public void sendMessage(String message) { Text.sendMessage(player,message, Text.MessageType.TEXT_CHAT); }
 
     /**
-     * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-0] )
+     * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-o] )
      * sent by Title Screen
      * @param message non formatted message to be sent to player
      * @since 5/08/2019
@@ -71,7 +71,7 @@ public class GamePlayer {
     public void sendTitle(String message) { Text.sendMessage(player,message, Text.MessageType.TITLE); }
 
     /**
-     * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-0] )
+     * This function will send the GamePlayer a formatted message, &( [0-9] [a-f] [i-o] )
      * sent by Action Bar
      * @param message non formatted message to be sent to player
      * @since 5/08/2019
@@ -157,26 +157,32 @@ public class GamePlayer {
             return this.friends;
         }
         friends_last_fetch=Calendar.getInstance().getTimeInMillis();
-        SQL sql = Main.getSqlConnection();
-        if(sql.isInitilized()){
-            ResultSet results = sql.query(String.format("SELECT * FROM `relationships` WHERE `player`='%s' LIMIT 25;",this.getUuid()));
-            try {
-                while(results.next()){
-                    GamePlayer player = new GamePlayer(UUID.fromString(results.getString("target")));
-                    player.BuildPlayer();
-                    friends.add(player);
-                }
-            }catch (SQLException e){
-                System.out.println("| ---------------------------- |");
-                System.out.println("|  This error was posted by GamePlayer.java getFriends");
-                e.printStackTrace();
-                System.out.println("| ---------------------------- |");
+        FileConfiguration config = Main.getPlugin(Main.class).getConfig();
+        SQL sql = new SQL(config.getString("sql.host"),config.getInt("sql.port"),config.getString("sql.user"),config.getString("sql.pass"),config.getString("sql.database"));
+        ResultSet results = sql.query(String.format("SELECT * FROM `relationships` WHERE `player`='%s' LIMIT 25;",this.getUuid()));
+        try {
+            while(results.next()){
+                GamePlayer player = new GamePlayer(UUID.fromString(results.getString("target")));
+                player.BuildPlayer();
+                friends.add(player);
             }
-        }else {
-            throw new Error("SQL server is not initialized, failed to fetch FriendList");
+        }catch (SQLException e){
+            System.out.println("| ---------------------------- |");
+            System.out.println("|  This error was posted by GamePlayer.java getFriends");
+            e.printStackTrace();
+            System.out.println("| ---------------------------- |");
         }
         this.friends=friends;
+        sql.close();
         return friends;
+    }
+
+    /**
+     * Has the players data been fetched
+     * @return TRUE/FALSE if player built
+     */
+    public boolean isBuilt() {
+        return isBuilt;
     }
 
     /**
@@ -206,31 +212,31 @@ public class GamePlayer {
     }
 
     public void BuildPlayer() {
-        SQL sql = Main.getSqlConnection();
-        if(sql.isInitilized()){
-            String query = "";
-            if(this.name!=null)query=String.format("SELECT * FROM `players` WHERE `username`='%s' LIMIT 1;",this.name);
-            if(query.equals("")&&this.uuid!=null)query=String.format("SELECT * FROM `players` WHERE `uuid`='%s' LIMIT 1;",this.uuid);
-            ResultSet results = sql.query(query);
-            try {
-                while(results.next()){
-                    this.name=results.getString("username");
-                    this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
-                    this.level=results.getInt("level");
-                    this.uuid=(UUID.fromString(results.getString("uuid")));
-                    if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
-                }
-                this.isBuilt=true;
-                return;
-            }catch (SQLException e){
-                System.out.println("| ---------------------------- |");
-                System.out.println("|  This error was posted by GamePlayer.java BuildPlayer");
-                e.printStackTrace();
-                System.out.println("| ---------------------------- |");
+        FileConfiguration config = Main.getPlugin(Main.class).getConfig();
+        SQL sql = new SQL(config.getString("sql.host"),config.getInt("sql.port"),config.getString("sql.user"),config.getString("sql.pass"),config.getString("sql.database"));
+        String query = "";
+        if(this.name!=null)query=String.format("SELECT * FROM `players` WHERE `username`='%s' LIMIT 1;",this.name);
+        if(query.equals("")&&this.uuid!=null)query=String.format("SELECT * FROM `players` WHERE `uuid`='%s' LIMIT 1;",this.uuid);
+        ResultSet results = sql.query(query);
+        try {
+            while(results.next()){
+                this.name=results.getString("username");
+                this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
+                this.level=results.getInt("level");
+                this.uuid=(UUID.fromString(results.getString("uuid")));
+                if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
             }
+            this.isBuilt=true;
+            return;
+        }catch (SQLException e){
+            System.out.println("| ---------------------------- |");
+            System.out.println("|  This error was posted by GamePlayer.java BuildPlayer");
+            e.printStackTrace();
+            System.out.println("| ---------------------------- |");
+        }
+        sql.close();
+        if(!isBuilt){
             player.kickPlayer(Text.format("&cAn error has occurred in the connection, try again later."));
-        }else {
-            throw new Error("SQL server is not initialized, failed to build GamePlayer");
         }
     }
 

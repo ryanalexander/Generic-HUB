@@ -22,6 +22,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import static net.blockcade.HUB.Main.GamePlayers;
+import static net.blockcade.HUB.Main.network;
 
 public class debug implements CommandExecutor {
 
@@ -30,21 +31,28 @@ public class debug implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
 
-        Player player = (Player)sender;
-        GamePlayer gamePlayer = GamePlayers.get(player);
-        if(gamePlayer==null){
-            sender.sendMessage(Text.format("&cPlayer is null"));
-            return false;
+
+        sender.sendMessage(Text.format("&a]---------------["));
+        sender.sendMessage(Text.format("&a]&e    Server Data    &a["));
+        sender.sendMessage(Text.format("&aUUID: &e"+ network.getUuid()));
+        sender.sendMessage(Text.format("&aNAME: &e"+ network.serverName));
+        sender.sendMessage(Text.format("&aJedis: &e"+ (Main.pool.getResource().isConnected()?"connected":"disconnected")));
+        if(sender instanceof Player) {
+            GamePlayer gamePlayer = GamePlayers.get((Player)sender);
+            if(gamePlayer==null){
+                sender.sendMessage(Text.format("&cPlayer is null"));
+                return false;
+            }
+            sender.sendMessage(Text.format("&a]---------------["));
+            sender.sendMessage(Text.format("&a]&e    Basic Data    &a["));
+            sender.sendMessage(Text.format("&aUUID: &e" + gamePlayer.getUuid()));
+            sender.sendMessage(Text.format("&aRank: &e" + gamePlayer.getRank()));
+            sender.sendMessage(Text.format("&a]&e    Preferences    &a["));
+            sender.sendMessage(Text.format("&aPlayer Visibility: &e" + gamePlayer.getPreferenceSettings().getPlayerVisibility()));
+            sender.sendMessage(Text.format("&aPet Visibility: &e" + gamePlayer.getPreferenceSettings().getPetVisibility()));
+            sender.sendMessage(Text.format("&aChat Visibility: &e" + gamePlayer.getPreferenceSettings().getChatVisibility()));
+            sender.sendMessage(Text.format("&a]---------------["));
         }
-        sender.sendMessage(Text.format("&a]---------------["));
-        sender.sendMessage(Text.format("&a]&e    Basic Data    &a["));
-        sender.sendMessage(Text.format("&aUUID: &e"+gamePlayer.getUuid()));
-        sender.sendMessage(Text.format("&aRank: &e"+gamePlayer.getRank()));
-        sender.sendMessage(Text.format("&a]&e    Preferences    &a["));
-        sender.sendMessage(Text.format("&aPlayer Visibility: &e"+gamePlayer.getPreferenceSettings().getPlayerVisibility()));
-        sender.sendMessage(Text.format("&aPet Visibility: &e"+gamePlayer.getPreferenceSettings().getPetVisibility()));
-        sender.sendMessage(Text.format("&aChat Visibility: &e"+gamePlayer.getPreferenceSettings().getChatVisibility()));
-        sender.sendMessage(Text.format("&a]---------------["));
 
         return false;
     }

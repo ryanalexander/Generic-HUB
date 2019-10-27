@@ -17,8 +17,8 @@ import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
 import net.blockcade.HUB.Common.Static.Preferances.PetVisibility;
 import net.blockcade.HUB.Common.Static.Preferances.PlayerVisibility;
 import net.blockcade.HUB.Common.Utils.SQL;
-import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,17 +82,17 @@ public class PreferenceSettings {
     }
 
     public void BuildPreferences() {
-        SQL sql = Main.getSqlConnection();
-        if(sql.isInitilized()){
-            ResultSet results = sql.query(String.format("SELECT * FROM `preferences` WHERE `uuid`='%s' LIMIT 1;",player.getUuid()));
-            try {
-                while(results.next()){
-                    this.setPlayerVisibility(PlayerVisibility.ALL_SHOWN);
-                    this.setChatVisibility(ChatVisibility.ALL_SHOWN);
-                    this.setFlight(true);
-                    this.setPetVisibility(PetVisibility.ALL_SHOWN);
-                    return;
-                }
+        FileConfiguration config = Main.getPlugin(Main.class).getConfig();
+        SQL sql = new SQL(config.getString("sql.host"),config.getInt("sql.port"),config.getString("sql.user"),config.getString("sql.pass"),config.getString("sql.database"));
+        ResultSet results = sql.query(String.format("SELECT * FROM `preferences` WHERE `uuid`='%s' LIMIT 1;",player.getUuid()));
+        try {
+            while(results.next()){
+                this.setPlayerVisibility(PlayerVisibility.ALL_SHOWN);
+                this.setChatVisibility(ChatVisibility.ALL_SHOWN);
+                this.setFlight(true);
+                this.setPetVisibility(PetVisibility.ALL_SHOWN);
+                return;
+            }
             }catch (SQLException e){
                 System.out.println("| ---------------------------- |");
                 System.out.println("|  This error was posted by PreferenceSettings.java BuildPreferences");
@@ -100,8 +100,5 @@ public class PreferenceSettings {
                 System.out.println("| ---------------------------- |");
             }
             sql.query(String.format("INSERT INTO `preferences` (`uuid`,`flight`,`player_visibility`,`pet_visibility`,`chat_visibility`) VALUES ('%s','0','%s','%s','%s')",player.getUuid(),PlayerVisibility.ALL_SHOWN,PetVisibility.ALL_SHOWN,ChatVisibility.ALL_SHOWN),true);
-        }else {
-            throw new Error("SQL server is not initialized, failed to build GamePlayer");
-        }
     }
 }

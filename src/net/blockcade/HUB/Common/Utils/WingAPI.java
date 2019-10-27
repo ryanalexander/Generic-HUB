@@ -1,4 +1,4 @@
-package net.blockcade.testing;
+package net.blockcade.HUB.Common.Utils;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;

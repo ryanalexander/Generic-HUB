@@ -31,7 +31,8 @@ public class SQL
         }
         catch (Exception e)
         {
-            System.out.println("Failed to connect to SQL Server [IP: " + host + ":" + port + ";Database:" + database + "]");
+            e.printStackTrace();
+            System.out.println("Failed to connect to SQL Server [IP: " + host + ":" + port + ";Database:" + database + " | USER: "+username+"; PASS: "+password+"]");
         }
     }
 
@@ -64,14 +65,6 @@ public class SQL
             System.out.println("Failed to execute a SQL Query, assumed server is offline.");
         }
         return null;
-    }
-
-    public boolean isInitilized() {
-        try {
-            return !this.connection.isClosed();
-        }catch (Exception e){
-            return false;
-        }
     }
 
     public void close()
