@@ -88,6 +88,7 @@ public class Player implements Listener {
         player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(player.spigot()).spigot());
         player.spigot().getInventory().setItem(4, CosmeticsMenu.getMenuItem().spigot());
         player.spigot().getInventory().setItem(8, HubMenu.getMenuItem().spigot());
+
     }
 
     @EventHandler

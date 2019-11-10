@@ -87,10 +87,10 @@ public class PreferenceSettings {
         ResultSet results = sql.query(String.format("SELECT * FROM `preferences` WHERE `uuid`='%s' LIMIT 1;",player.getUuid()));
         try {
             while(results.next()){
-                this.setPlayerVisibility(PlayerVisibility.ALL_SHOWN);
-                this.setChatVisibility(ChatVisibility.ALL_SHOWN);
-                this.setFlight(true);
-                this.setPetVisibility(PetVisibility.ALL_SHOWN);
+                this.setPlayerVisibility(PlayerVisibility.valueOf(results.getString("player_visibility")));
+                this.setChatVisibility(ChatVisibility.valueOf(results.getString("chat_visibility")));
+                this.setFlight(results.getBoolean("flight"));
+                this.setPetVisibility(PetVisibility.valueOf(results.getString("pet_visibility")));
                 return;
             }
             }catch (SQLException e){

@@ -29,6 +29,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
@@ -72,8 +73,8 @@ public class Main extends JavaPlugin {
         /*
          * Register required commands
          */
-        getCommand("debug").setExecutor(new debug());
-        getCommand("fly").setExecutor(new fly());
+        Objects.requireNonNull(getCommand("debug")).setExecutor(new debug());
+        Objects.requireNonNull(getCommand("fly")).setExecutor(new fly());
 
         new BukkitRunnable(){
             @Override

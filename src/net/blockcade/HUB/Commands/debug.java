@@ -14,12 +14,18 @@
 package net.blockcade.HUB.Commands;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.Static.GameServer;
+import net.blockcade.HUB.Common.Static.Variables.Game;
+import net.blockcade.HUB.Common.Utils.Servers;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Map;
 
 import static net.blockcade.HUB.Main.GamePlayers;
 import static net.blockcade.HUB.Main.network;
@@ -52,6 +58,15 @@ public class debug implements CommandExecutor {
             sender.sendMessage(Text.format("&aPet Visibility: &e" + gamePlayer.getPreferenceSettings().getPetVisibility()));
             sender.sendMessage(Text.format("&aChat Visibility: &e" + gamePlayer.getPreferenceSettings().getChatVisibility()));
             sender.sendMessage(Text.format("&a]---------------["));
+
+            if(args.length>=1&&args[0].equalsIgnoreCase("servers")){
+                for(Map.Entry<Game, ArrayList<GameServer>> servers : Servers.getAvailableServers().entrySet()){
+                    sender.sendMessage("--[ "+servers.getKey().getName()+" ]--");
+                    for(GameServer server : servers.getValue()){
+                        sender.sendMessage(server.getName()+" / "+server.getState()+" / "+server.getGame()+" / "+server.getPlayercount());
+                    }
+                }
+            }
         }
 
         return false;

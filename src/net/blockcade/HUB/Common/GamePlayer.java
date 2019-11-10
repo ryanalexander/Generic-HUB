@@ -39,8 +39,8 @@ public class GamePlayer {
     private PreferenceSettings preferenceSettings;
     private boolean isBuilt=false;
     private String name;
-    private int level;
-    private Ranks rank;
+    private int level=0;
+    private Ranks rank=Ranks.MEMBER;
     private GameParty party=null;
 
     private ArrayList<GamePlayer> friends = new ArrayList<>();

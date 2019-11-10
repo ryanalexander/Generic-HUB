@@ -18,8 +18,8 @@ public class Servers {
 
         for(GameServer server : getServers().values()){
             Game game;
-            try {game=Game.valueOf(server.getGame().toUpperCase());}catch(Exception e){continue;}
-            if(!(server.getState().contains("LOBBY"))){continue;}
+            try {game=Game.valueOf(server.getGame().toUpperCase());}catch(Exception e){System.out.println("Unknown game - "+server.getGame().toUpperCase());continue;}
+            if(!(server.getState().contains("LOBBY"))&&(game!=Game.ARENA)&&!server.getState().contains("DISABLED")){continue;}
             if(server.getPlayercount()>=Game.valueOf(server.getGame().toUpperCase()).getMaxPlayers()){continue;}
             if(!(servers.containsKey(game)))servers.put(game,new ArrayList<>());
             servers.get(game).add(server);
@@ -31,6 +31,7 @@ public class Servers {
 
     public static HashMap<String, GameServer> getServers() {
         HashMap<String, GameServer> gameServers = new HashMap<>();
+        ArrayList<String> ignoring = new ArrayList<>();
         try(Jedis jedis = Main.pool.getResource()) {
             Set<String> servers = jedis.keys("SERVER|*");
             Iterator<String> iterator = servers.iterator();
@@ -40,9 +41,8 @@ public class Servers {
                 String uuid = args[1];
                 String field = args[2];
                 String data = jedis.get(argument);
-                if (data == null || data.equals("null")) {
-                    continue;
-                }
+                if(ignoring.contains(uuid))continue;
+                if (data == null || data.toLowerCase().contains("null")) { ignoring.add(uuid);gameServers.remove(uuid);continue;}
                 GameServer server;
                 if (gameServers.containsKey(uuid)) {
                     server = gameServers.get(uuid);
