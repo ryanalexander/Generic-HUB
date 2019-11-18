@@ -63,17 +63,20 @@ public class Player implements Listener {
                     return;
                 }
                 if(player.getRank().getLevel()>=2){
-                    event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getName())));
+                    event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getRank().getFormatted()+" "+player.getName())));
+                }else {
+                    player.sendMessage("&fWelcome back!");
+                    player.sendMessage("&dDid you know, if you purchase a rank your arrival will be announced!");
                 }
                 player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
+                event.getPlayer().setLevel(player.getLevel());
             }
         }.start();
 
-        player.spigot().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,Integer.MAX_VALUE,1),false);
+        event.getPlayer().addPotionEffect(new PotionEffect(PotionEffectType.SPEED,Integer.MAX_VALUE,1),false);
 
-        player.spigot().playSound(player.spigot().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,1);
+        event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP,1,1);
 
-        event.getPlayer().setLevel(player.getLevel());
 
         event.getPlayer().setFoodLevel(20);
         event.getPlayer().setHealth(20);

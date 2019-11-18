@@ -14,17 +14,17 @@
 package net.blockcade.HUB.Common.Static.Variables;
 
 public enum Ranks {
-        MEMBER(0,"&e"),
-        SUPER(1,"&6"),
-        MEGA(2,"&d"),
-        ULTRA(3,"&a"),
-        YOUTUBE(10,"&c"),
-        HELPER(50, "&b"),
-        ADMIN(85,"&4");
+        MEMBER(0,"&e&l"),
+        SUPER(1,"&6&l"),
+        MEGA(2,"&d&l"),
+        ULTRA(3,"&a&l"),
+        YOUTUBE(10,"&c&l"),
+        HELPER(50, "&b&l"),
+        ADMIN(85,"&4&l");
         private int level;
         private String rank;
         public int getLevel() {return this.level;}
-        public String getFormatted() {return this.getColor()+this.name();}
+        public String getFormatted() {return this.getColor()+this.name()+"&r";}
         public String getColor() {return this.rank;}
         private Ranks(int level,String rank){this.rank = rank.toUpperCase();this.level=level;}
 }

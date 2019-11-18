@@ -19,8 +19,10 @@ public class Servers {
         for(GameServer server : getServers().values()){
             Game game;
             try {game=Game.valueOf(server.getGame().toUpperCase());}catch(Exception e){System.out.println("Unknown game - "+server.getGame().toUpperCase());continue;}
-            if(!(server.getState().contains("LOBBY"))&&(game!=Game.ARENA)&&!server.getState().contains("DISABLED")){continue;}
-            if(server.getPlayercount()>=Game.valueOf(server.getGame().toUpperCase()).getMaxPlayers()){continue;}
+
+            if(server.getState().contains("DISABLED")){continue;}
+            if(!(server.getState().contains("LOBBY"))&&game!=Game.ARENA){continue;}
+
             if(!(servers.containsKey(game)))servers.put(game,new ArrayList<>());
             servers.get(game).add(server);
         }

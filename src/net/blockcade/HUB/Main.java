@@ -82,7 +82,7 @@ public class Main extends JavaPlugin {
                 /*
                  * Disable Guardian recording & playback
                  */
-                if(Bukkit.getPluginManager().getPlugin("Guardian").isEnabled()) {
+                if(Bukkit.getPluginManager().getPlugin("Guardian")!=null&&(Objects.requireNonNull(Bukkit.getPluginManager().getPlugin("Guardian"))).isEnabled()) {
                     System.out.println("Disabled Guardian");
                     Guardian.setAllowRecording(false);
                     Guardian.setAllowSpectating(false);
