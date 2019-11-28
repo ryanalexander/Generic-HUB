@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class GameMenu {
 
@@ -31,10 +32,28 @@ public class GameMenu {
 
         int inventory_pos = 12;
 
+        ItemStack pokemon_head = Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0aW1lc3RhbXAiOjE1NzQ3NDgzNzAzNjYsInByb2ZpbGVJZCI6ImZkNjBmMzZmNTg2MTRmMTJiM2NkNDdjMmQ4NTUyOTlhIiwicHJvZmlsZU5hbWUiOiJSZWFkIiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS84MzlmMThmMzkxM2FmNDEyYTkwYTkyOTk5NGRmMWYxYWEzMWE5Mjc2OWI2MDc3ZTQxMmZiZTc1NTY1ODllOTE4In19fQ==");
+        Item pokemon = new Item(pokemon_head,"&ePixelmon");
+        if(Main.GamePlayers.get(player).getRank().getLevel()<2) {
+            pokemon.setLore(new String[]{"&r", "&fComing Soon"});
+            pokemon.setOnClick((p)->{
+                Text.sendMessage(p, "&fThat server has not been released to the public", Text.MessageType.TEXT_CHAT);
+            });
+        }else {
+            pokemon.setLore(new String[]{"&7Adventure and Battle with", "&7Pokemon found throughout the","&7massive map.","&r","&aClick to join"});
+            pokemon.setOnClick((p)->{
+                Main.GamePlayers.get(player).joinQueue(Game.POKE);
+                Text.sendMessage(p, "&c&lIMPORTANT &fPokemon is not yet public, this server is only accessible to &b&lBETA TESTERS&f.", Text.MessageType.TEXT_CHAT);
+            });
+        }
+
         inventory.setItem(9,GameMenu.getMenuItem().spigot());
         inventory.setItem(18, HubMenu.getMenuItem().spigot());
+        inventory.setItem(27, pokemon.spigot());
+
         for(Game game : Game.values()){
             if(game==Game.HUB)continue;
+            if(game==Game.POKE)continue;
             Item gameItem = new Item(game.getMaterial(),game.getColor()+game.getName());
             gameItem.setOnClick(new Item.click() {
                 @Override

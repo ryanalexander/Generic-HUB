@@ -20,6 +20,7 @@ import net.blockcade.HUB.Common.Static.Inventory.menus.GameMenu;
 import net.blockcade.HUB.Common.Static.Inventory.menus.HubMenu;
 import net.blockcade.HUB.Common.Static.Inventory.menus.ProfileMenu;
 import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
+import net.blockcade.HUB.Common.Utils.ScoreboardManager;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
@@ -35,6 +36,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.scheduler.BukkitRunnable;
 
 /**
  * This class was created for the soul purpose of having a single place for all Player related events, instead of creating multiple classes.
@@ -62,13 +64,67 @@ public class Player implements Listener {
                     player.spigot().kickPlayer(Text.format("&cAn error has occurred in the connection."));
                     return;
                 }
+
+                new BukkitRunnable(){
+                    @Override
+                    public void run() {
+                        ScoreboardManager sm = new ScoreboardManager(player.getName());
+                        sm.setGamePlayer(player);
+                        sm.enableHealthCounter();
+                        String name = "  BLOCKCADE  ";
+                        sm.addBlank();
+                        sm.addLine("&6&lRank");
+                        sm.addLine(" :rank:");
+                        sm.addBlank();
+                        sm.addLine("&b&lLevel");
+                        sm.addLine(" :level:");
+                        sm.addBlank();
+                        sm.addLine("&7:server_name: &8- &dblockcade.net");
+                        sm.addBlank();
+                        sm.showFor(player.spigot());
+
+                        new BukkitRunnable() {
+                            int offset = 1;
+                            int expected_offset = name.length();
+                            boolean left = false;
+
+                            @Override
+                            public void run() {
+                                if (!(player.spigot().isOnline())) {
+                                    cancel();
+                                    return;
+                                }
+                                if (offset <= expected_offset) {
+                                    left = false;
+                                    expected_offset = name.length() - 1;
+                                }
+                                if (offset >= expected_offset) {
+                                    left = true;
+                                    expected_offset = 1;
+                                }
+
+                                String var = "&9&l" +
+                                        name.substring(0, offset) +
+                                        "&7&l" + name.substring(offset, offset + 1) + "&f&l" +
+                                        (offset + 2 <= name.length() ? name.substring(offset + 1) : "");
+                                sm.setDisplayname(var);
+                                if (left) {
+                                    offset--;
+                                } else {
+                                    offset++;
+                                }
+                            }
+                        }.runTaskTimer(Main.getPlugin(Main.class), 0L, 1L);
+                    }
+                }.runTask(Main.getPlugin(Main.class));
                 if(player.getRank().getLevel()>=2){
-                    event.setJoinMessage(Text.format(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getRank().getFormatted()+" "+player.getName())));
+                    Text.sendAll(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getRank().getFormatted()+" "+player.getName()), Text.MessageType.TEXT_CHAT);
                 }else {
                     player.sendMessage("&fWelcome back!");
                     player.sendMessage("&dDid you know, if you purchase a rank your arrival will be announced!");
                 }
                 player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
+                player.spigot().setPlayerListName(Text.format(player.getRank().getFormatted()+"&r "+player.getName()));
                 event.getPlayer().setLevel(player.getLevel());
             }
         }.start();
