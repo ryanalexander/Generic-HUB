@@ -7,49 +7,48 @@ import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.SkullMeta;
 
 public class PreferencesMenu {
 
     public static Item getMenuItem(Player player) {
-        ItemStack is = new ItemStack(Material.PLAYER_HEAD);
-        SkullMeta sm = (SkullMeta)is.getItemMeta();
-        if(player!=null)sm.setOwningPlayer(player);
-        is.setItemMeta(sm);
-        Item item = new Item(is,"&cPreferences");
+        Item item = new Item(Material.COMPARATOR,"&cPreferences");
 
-        item.setLore(new String[]{"","&7This menu contains all your","&7network wide preferences.","","&7Sub Menus","&ePrivacy&f, &eCensorship&f, &eVisuals"});
-        item.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(getMenu(p));
-            }
+        item.setLore("","&7This menu contains all your","&7network wide preferences.","","&7Sub Menus","&ePrivacy&f, &eCensorship&f, &eVisuals");
+        item.setOnClick((p)->{
+            p.openInventory(getMenu(p));
         });
         return item;
     }
 
-    private static Inventory getMenu(Player player){
+    public static Inventory getMenu(Player player){
         Inventory inventory = Bukkit.createInventory(null,45, Text.format("&7Preferences"));
 
         Manager.addProfileHeader(inventory, Main.GamePlayers.get(player));
 
         /*
+         Privacy
+         Censorship
+         Visuals
+         */
+
+        /*
          * Categories for Cosmetics
          */
-        Item censorship = new Item(Censorship.getMenuItem().spigot(),"&fCensorship");
-        Item preferences = new Item(Material.COMPARATOR,"&cPreferences");
-        Item statistics = new Item(Material.BOOK,"&fStatistics");
+        Item privacy = new Item(Material.PAPER,"&fPrivacy");
+        Item visuals = new Item(Material.LEGACY_FIRE,"&fVisuals");
 
-        censorship.setLore(new String[]{"&7This menu contains all your","&7lobby related cosmetics","","Sub Menus:","&eParticles&7, &eHeads&7, &eCostumes&7, &ePets&7, &eMorphs"});
-        preferences.setLore(new String[]{"&7This menu contains all your","&7network wide preferences","","Sub Menus:","&ePrivacy&7, &eCensorship&7, &eVisuals&7"});
-        statistics.setLore(new String[]{"&7This menu contains all your","&7network wide statistics","","Sub Menus:","&ePlayer Search&7"});
+        privacy.setLore("&fThis menu is coming soon");
+        visuals.setLore("&fThis menu is coming soon");
 
-        inventory.setItem(30, CosmeticsMenu.getMenuItem().spigot());
-        inventory.setItem(31,preferences.spigot());
-        inventory.setItem(32,statistics.spigot());
+        privacy.setOnClick((p)->{p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);});
+        visuals.setOnClick((p)->{p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);});
+
+        inventory.setItem(30, privacy.spigot());
+        inventory.setItem(31, Censorship.getMenuItem().spigot());
+        inventory.setItem(32, visuals.spigot());
 
         return inventory;
     }

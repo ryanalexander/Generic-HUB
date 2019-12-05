@@ -15,6 +15,7 @@ package net.blockcade.HUB;
 
 import net.blockcade.HUB.Commands.debug;
 import net.blockcade.HUB.Commands.fly;
+import net.blockcade.HUB.Commands.spawn;
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameSearch;
 import net.blockcade.HUB.Common.Static.GameServer;
@@ -75,6 +76,7 @@ public class Main extends JavaPlugin {
          */
         Objects.requireNonNull(getCommand("debug")).setExecutor(new debug());
         Objects.requireNonNull(getCommand("fly")).setExecutor(new fly());
+        Objects.requireNonNull(getCommand("spawn")).setExecutor(new spawn());
 
         new BukkitRunnable(){
             @Override

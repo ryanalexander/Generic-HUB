@@ -14,13 +14,13 @@
 package net.blockcade.HUB.Common.Static.Variables;
 
 public enum Ranks {
-        MEMBER(0,"&e&l"),
-        SUPER(1,"&6&l"),
-        MEGA(2,"&d&l"),
-        ULTRA(3,"&a&l"),
-        YOUTUBE(10,"&c&l"),
-        HELPER(50, "&b&l"),
-        ADMIN(85,"&4&l");
+        MEMBER(0,"&f&l"),
+        SUPER(1,"&a&l"),
+        MEGA(2,"&b&l"),
+        ULTRA(3,"&d&l"),
+        MEDIA(10,"&6&l"),
+        HELPER(50, "&9&l"),
+        ADMIN(85,"&c&l");
         private int level;
         private String rank;
         public int getLevel() {return this.level;}

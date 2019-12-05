@@ -8,3 +8,8 @@ commands:
     description: Testing command, remove
   fly:
     description: Toggle flight for players.
+  spawn:
+    description: Teleport to the spawn
+    aliases:
+      - home
+      - respawn

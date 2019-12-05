@@ -153,6 +153,7 @@ public class Player implements Listener {
     @EventHandler
     public void PlayerLeave(PlayerQuitEvent event){
         // Remove cachedGamePlayer
+        event.setQuitMessage(null);
         if(Main.GamePlayers.containsKey(event.getPlayer()))Main.GamePlayers.remove(event.getPlayer());
     }
 
