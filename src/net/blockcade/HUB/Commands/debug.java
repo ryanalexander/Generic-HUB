@@ -16,6 +16,7 @@ package net.blockcade.HUB.Commands;
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameServer;
 import net.blockcade.HUB.Common.Static.Variables.Game;
+import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.Servers;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -36,11 +37,15 @@ public class debug implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
-
+        if (!sender.isOp()&& GamePlayers.get((Player)sender).getRank().getLevel()< Ranks.HELPER.getLevel()) {
+            sender.sendMessage(Text.format("&cYou must be %s&c or higher to execute that command.",Ranks.HELPER.getFormatted()));
+            return false;
+        }
 
         sender.sendMessage(Text.format("&a]---------------["));
         sender.sendMessage(Text.format("&a]&e    Server Data    &a["));
         sender.sendMessage(Text.format("&aUUID: &e"+ network.getUuid()));
+        sender.sendMessage(Text.format("&aCONTAINER: &e"+ network.getContainer()));
         sender.sendMessage(Text.format("&aNAME: &e"+ network.serverName));
         sender.sendMessage(Text.format("&aJedis: &e"+ (Main.pool.getResource().isConnected()?"connected":"disconnected")));
         if(sender instanceof Player) {

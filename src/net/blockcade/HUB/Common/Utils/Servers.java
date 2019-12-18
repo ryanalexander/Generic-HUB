@@ -18,7 +18,13 @@ public class Servers {
 
         for(GameServer server : getServers().values()){
             Game game;
-            try {game=Game.valueOf(server.getGame().toUpperCase());}catch(Exception e){System.out.println("Unknown game - "+server.getGame().toUpperCase());continue;}
+            if(server==null)continue;
+            try {
+                game=Game.valueOf(server.getGame().toUpperCase());
+            }catch(Exception e){
+                System.out.println("Unknown game - "+(server.getGame()!=null?server.getGame().toUpperCase():"null")+" - "+server.getName()+" - "+server.getUuid());
+                continue;
+            }
 
             if(server.getState().contains("DISABLED")){continue;}
             if(!(server.getState().contains("LOBBY"))&&game!=Game.ARENA){continue;}

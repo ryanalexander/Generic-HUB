@@ -13,14 +13,15 @@
 
 package net.blockcade.HUB.Common.Utils;
 
-import net.minecraft.server.v1_14_R1.ChatMessageType;
-import net.minecraft.server.v1_14_R1.IChatBaseComponent;
-import net.minecraft.server.v1_14_R1.PacketPlayOutChat;
+import net.minecraft.server.v1_15_R1.ChatMessageType;
+import net.minecraft.server.v1_15_R1.IChatBaseComponent;
+import net.minecraft.server.v1_15_R1.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_14_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_15_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.Formatter;
 import java.util.Iterator;
 
 public class Text {
@@ -76,5 +77,8 @@ public class Text {
 
     public static String format(String str) {
         return ChatColor.translateAlternateColorCodes('&', "&r" + str);
+    }
+    public static String format(String str, String... args) {
+        return ChatColor.translateAlternateColorCodes('&', "&r" + (new Formatter().format(str, args)));
     }
 }

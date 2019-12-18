@@ -20,7 +20,7 @@ public class ProfileMenu {
         is.setItemMeta(sm);
         Item item = new Item(is,"&bProfile &7(Right Click)");
 
-        item.setLore(new String[]{"","&7Click to open your Profile",""});
+        item.setLore("","&7Click to open your Profile","");
         item.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
