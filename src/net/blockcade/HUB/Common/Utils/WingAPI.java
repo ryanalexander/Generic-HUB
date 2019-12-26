@@ -22,8 +22,10 @@ public class WingAPI {
         new BukkitRunnable(){
             @Override
             public void run() {
-                for(WinggedPlayer winggedPlayer : WinggedPlayers.values())
+                for(WinggedPlayer winggedPlayer : WinggedPlayers.values()) {
+                    if(!winggedPlayer.player.isOnline()){WinggedPlayers.remove(winggedPlayer.player);continue;}
                     winggedPlayer.render();
+                }
             }
         }.runTaskTimer(plugin,0L,1L);
     }
@@ -44,9 +46,12 @@ public class WingAPI {
                 }
             }
             this.player=player;
+            WinggedPlayers.put(player,this);
         }
-
-        public void render(){
+        public void stop() {
+            WinggedPlayers.remove(player);
+        }
+        private void render(){
             for (int yy = 0; yy < image.getHeight(); yy++) {
                 for (int x = 0; x < image.getWidth(); x++) {
                     final int clr = image.getRGB(x, yy);

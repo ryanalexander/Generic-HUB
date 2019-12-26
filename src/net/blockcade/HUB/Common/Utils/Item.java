@@ -149,7 +149,7 @@ public class Item implements Listener {
     public void InventoryClickEvent(InventoryClickEvent e) {
         boolean done = false;
         try {
-            for(Item item : actions.keySet()){
+            for(Item item : ((HashMap<Item, click>)actions.clone()).keySet()){
                 click c = actions.get(item);
                 if(done)return;
                 if(item.spigot().getType().equals(Material.PLAYER_HEAD)){

@@ -1,13 +1,11 @@
 package net.blockcade.HUB.Common.Static.Variables;
 
-import net.blockcade.HUB.Common.Utils.Particles.ParticleEffect;
 import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
-import net.blockcade.HUB.Common.Utils.Particles.Rings;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 public enum Cosmetics {
-    BED_BATTLES(Material.FIRE_CHARGE,"Rings","&fRing of fire around your head", ParticleManager.ParticleType.RINGS, ChatColor.RED);
+    RINGS(Material.FIRE_CHARGE,"Rings","&fRing of fire around your head", ParticleManager.ParticleType.FIRE_RINGS, ChatColor.RED);
     String name;
     Material material;
     String description;

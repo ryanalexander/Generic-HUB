@@ -24,7 +24,7 @@ public class Rings extends ParticleEffect {
     int frame = 0;
 
     // Changes nothing rn
-    public Rings(Player player){
+    public Rings(Player player, Particle particle){
         target=player;new ParticleEffect(20L, Particle.FLAME,player);
     }
 

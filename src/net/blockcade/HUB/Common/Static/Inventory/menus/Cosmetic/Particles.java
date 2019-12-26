@@ -48,15 +48,16 @@ public class Particles {
         rings.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
-                Main.particleManager.setParticle(p, ParticleManager.ParticleType.RINGS);
+                Main.particleManager.setParticle(p, ParticleManager.ParticleType.FIRE_RINGS);
             }
         });
 
         Item demon_wings = new Item(Material.BLAZE_SPAWN_EGG,"&cDemon Wings");
-        demon_wings.setLore(new String[]{"","&eTODO: Add description for Demon Wings","&aClick to enable"});
+        demon_wings.setLore("","&eTODO: Add description for Demon Wings","&aClick to enable");
         demon_wings.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
+                Main.particleManager.setParticle(p, ParticleManager.ParticleType.NONE);
                 new WingAPI.WinggedPlayer(p,"demon");
             }
         });
