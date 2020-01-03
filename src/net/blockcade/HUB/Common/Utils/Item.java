@@ -121,7 +121,7 @@ public class Item implements Listener {
 
 
     @EventHandler
-    public void EntityInteract(PlayerInteractEvent e){
+    void EntityInteract(PlayerInteractEvent e){
         boolean done = false;
         if(!(e.getHand().equals(EquipmentSlot.HAND)))return;
         try {
@@ -146,7 +146,7 @@ public class Item implements Listener {
         }
     }
     @EventHandler
-    public void InventoryClickEvent(InventoryClickEvent e) {
+    void InventoryClickEvent(InventoryClickEvent e) {
         boolean done = false;
         try {
             for(Item item : ((HashMap<Item, click>)actions.clone()).keySet()){

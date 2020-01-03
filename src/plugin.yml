@@ -8,6 +8,16 @@ commands:
     description: Testing command, remove
   fly:
     description: Toggle flight for players.
+    aliases:
+      - togglefly
+      - flight
+      - haxon
+  queue:
+    description: Queue for specific gamemode
+    aliases:
+      - joinqueue
+      - search
+      - play
   spawn:
     description: Teleport to the spawn
     aliases:

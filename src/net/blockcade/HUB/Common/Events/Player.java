@@ -20,6 +20,7 @@ import net.blockcade.HUB.Common.Static.Inventory.menus.GameMenu;
 import net.blockcade.HUB.Common.Static.Inventory.menus.HubMenu;
 import net.blockcade.HUB.Common.Static.Inventory.menus.ProfileMenu;
 import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
+import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.ScoreboardManager;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -117,14 +118,13 @@ public class Player implements Listener {
                         }.runTaskTimer(Main.getPlugin(Main.class), 0L, 1L);
                     }
                 }.runTask(Main.getPlugin(Main.class));
-                if(player.getRank().getLevel()>=2){
+                if(!player.getRank().equals(Ranks.MEMBER)){
                     Text.sendAll(String.format("&e>&6>&c> &fWelcome %s &c<&6<&e<",player.getRank().getFormatted()+" "+player.getName()), Text.MessageType.TEXT_CHAT);
                 }else {
-                    player.sendMessage("&fWelcome back!");
                     player.sendMessage("&dDid you know, if you purchase a rank your arrival will be announced!");
                 }
                 player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
-                player.spigot().setPlayerListName(Text.format(player.getRank().getFormatted()+"&r "+player.getName()));
+
                 event.getPlayer().setLevel(player.getLevel());
             }
         }.start();
@@ -154,7 +154,7 @@ public class Player implements Listener {
     public void PlayerLeave(PlayerQuitEvent event){
         // Remove cachedGamePlayer
         event.setQuitMessage(null);
-        if(Main.GamePlayers.containsKey(event.getPlayer()))Main.GamePlayers.remove(event.getPlayer());
+        Main.GamePlayers.remove(event.getPlayer());
     }
 
     @EventHandler
