@@ -242,4 +242,9 @@ public class GamePlayer {
 
     public Player spigot() {return this.player;}
 
+    public static GamePlayer getGamePlayer(Player player){
+        if(Main.GamePlayers.containsKey(player))
+            return Main.GamePlayers.get(player);
+        return new GamePlayer(player);
+    }
 }

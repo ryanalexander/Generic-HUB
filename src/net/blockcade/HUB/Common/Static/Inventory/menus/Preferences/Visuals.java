@@ -16,13 +16,8 @@ public class Visuals {
         public static Item getMenuItem() {
             Item item = new Item(Material.HOPPER,"&fVisuals");
 
-            item.setLore(new String[]{"","&7View all Visuals related Preferences",""});
-            item.setOnClick(new Item.click() {
-                @Override
-                public void run(Player p) {
-                    p.openInventory(getMenu(p));
-                }
-            });
+            item.setLore("","&7View all Visuals related Preferences","");
+            item.setOnClick(p -> p.openInventory(getMenu(p)));
 
             return item;
         }
@@ -33,9 +28,7 @@ public class Visuals {
             Manager.addProfileHeader(inventory, Main.GamePlayers.get(player));
 
             Item back = new Item(Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0="),"&eBack");
-            back.setOnClick((p)->{
-                p.openInventory(PreferencesMenu.getMenu(p));
-            });
+            back.setOnClick((p)-> p.openInventory(PreferencesMenu.getMenu(p)));
             inventory.setItem(0,back.spigot());
 
 

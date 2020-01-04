@@ -63,14 +63,21 @@ public class PreferenceSettings {
 
     public void setFlight(boolean flight) {
         this.flight = flight;
+        SavePreferences();
     }
 
     public void setChatVisibility(ChatVisibility chatVisibility) {
         this.chatVisibility = chatVisibility;
+        SavePreferences();
     }
 
     public void setPetVisibility(PetVisibility petVisibility) {
         this.petVisibility = petVisibility;
+        SavePreferences();
+    }
+
+    public void setFilterVisibility(FilterVisibility filterVisibility) {
+        this.filterVisibility = filterVisibility;
     }
 
     /**
@@ -79,6 +86,7 @@ public class PreferenceSettings {
      */
     public void setPlayerVisibility(PlayerVisibility playerVisibility) {
         this.playerVisibility = playerVisibility;
+        SavePreferences();
     }
 
     public boolean isFlight() {
@@ -87,6 +95,20 @@ public class PreferenceSettings {
 
     public PlayerVisibility getPlayerVisibility() {
         return playerVisibility;
+    }
+
+    public void SavePreferences() {
+        FileConfiguration config = Main.getPlugin(Main.class).getConfig();
+        SQL sql = new SQL(config.getString("sql.host"),config.getInt("sql.port"),config.getString("sql.user"),config.getString("sql.pass"),config.getString("sql.database"));
+        sql.query(String.format("UPDATE `preferences` SET " +
+                "`flight`='%s', " +
+                "`player_visibility`='%s', " +
+                "`pet_visibility`='%s', " +
+                "`chat_visibility`='%s', " +
+                "`particle_quality`='%s', " +
+                "`party_privacy`='%s', " +
+                "`chat_filter`='%s' " +
+                "WHERE `uuid`='%s';",flight,playerVisibility,petVisibility,chatVisibility,"MEDIUM","ALL_INVITE",filterVisibility,player.getUuid()),true);
     }
 
     public void BuildPreferences() {
@@ -99,6 +121,7 @@ public class PreferenceSettings {
                 this.setChatVisibility(ChatVisibility.valueOf(results.getString("chat_visibility")));
                 this.setFlight(results.getBoolean("flight"));
                 this.setPetVisibility(PetVisibility.valueOf(results.getString("pet_visibility")));
+                this.setFilterVisibility(FilterVisibility.valueOf(results.getString("chat_filter")));
                 return;
             }
             }catch (SQLException e){
