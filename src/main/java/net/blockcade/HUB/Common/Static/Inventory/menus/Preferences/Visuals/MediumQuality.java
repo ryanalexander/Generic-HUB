@@ -17,7 +17,7 @@ public class MediumQuality {
         Item item = new Item(is,"&6Medium Quality");
         if(gameplayer.getPreferenceSettings().getVisualQuality().equals(VisualQuality.MEDIUM))
             item.setEnchanted(true);
-        item.setLore("&7With &6Medium Quality &7objects will be shaped","but blurry around the edges");
+        item.setLore("&7With &6Medium Quality &7objects will be shaped","&7but blurry around the edges");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setVisualQuality(VisualQuality.MEDIUM);
             p.openInventory(Visual.getMenu(p));
