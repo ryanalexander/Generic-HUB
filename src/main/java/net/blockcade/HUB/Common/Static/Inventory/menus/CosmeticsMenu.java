@@ -41,6 +41,11 @@ public class CosmeticsMenu {
         Item pets = new Item(Material.GHAST_SPAWN_EGG,"&ePets");
         Item morphs = new Item(Material.LEATHER,"&eMorphs");
 
+        heads.setLore("Coming Soon");
+        costumes.setLore("Coming Soon");
+        pets.setLore("Coming Soon");
+        morphs.setLore("Coming Soon");
+
         inventory.setItem(29,Particles.getMenuItem().spigot());
         inventory.setItem(30,heads.spigot());
         inventory.setItem(31,costumes.spigot());
