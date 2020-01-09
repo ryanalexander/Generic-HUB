@@ -6,15 +6,15 @@ import net.blockcade.HUB.Common.Utils.Item;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class ModerateFilter {
+public class MediumFilter {
 
     public static Item getMenuItem(GamePlayer gameplayer) {
-        ItemStack is = new ItemStack(Material.YELLOW_DYE);
+        ItemStack is = new ItemStack(Material.YELLOW_STAINED_GLASS_PANE);
 
-        Item item = new Item(is,"&6MODERATE &bfilter");
+        Item item = new Item(is,"&eMediuim Filter");
         if(gameplayer.getPreferenceSettings().getFilterVisibility().equals(FilterVisibility.MODERATE))
             item.setEnchanted(true);
-        item.setLore("","&7a moderate filter will be applied","");
+        item.setLore("","&7With &eMedium Filter &7No cursing is shown,","&eand suggestive terms are not displayed.","&cNetwork Blacklist still applies.","&b[Ages 10 to 15]");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.MODERATE);
         });

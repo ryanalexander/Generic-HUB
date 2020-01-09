@@ -6,15 +6,15 @@ import net.blockcade.HUB.Common.Utils.Item;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class StrictFilter {
+public class StrongFilter {
 
     public static Item getMenuItem(GamePlayer gameplayer) {
-        ItemStack is = new ItemStack(Material.RED_DYE);
+        ItemStack is = new ItemStack(Material.GREEN_STAINED_GLASS_PANE);
 
-        Item item = new Item(is,"&cSTRICT &bfilter");
+        Item item = new Item(is,"&aStrong Filter");
         if(gameplayer.getPreferenceSettings().getFilterVisibility().equals(FilterVisibility.STRICT))
             item.setEnchanted(true);
-        item.setLore("","&7a strict filter will be applied","");
+        item.setLore("&7With &aStrong Filter &7Only family friendly messages are displayed.","&b[Ages 10 and below]");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.STRICT);
         });

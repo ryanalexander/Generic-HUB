@@ -2,9 +2,10 @@ package net.blockcade.HUB.Common.Static.Inventory.menus.Preferences;
 
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.Inventory.Manager;
-import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.ModerateFilter;
-import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.OpenFilter;
-import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.StrictFilter;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.LightFilter;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.MediumFilter;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.NoFilter;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters.StrongFilter;
 import net.blockcade.HUB.Common.Static.Inventory.menus.PreferencesMenu;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
@@ -43,9 +44,11 @@ public class Censorship {
             });
             inventory.setItem(0,back.spigot());
 
-            inventory.setItem(30, OpenFilter.getMenuItem(gamePlayer).spigot());
-            inventory.setItem(31, ModerateFilter.getMenuItem(gamePlayer).spigot());
-            inventory.setItem(32, StrictFilter.getMenuItem(gamePlayer).spigot());
+            inventory.setItem(29, NoFilter.getMenuItem(gamePlayer).spigot());
+            inventory.setItem(32, MediumFilter.getMenuItem(gamePlayer).spigot());
+            inventory.setItem(34, StrongFilter.getMenuItem(gamePlayer).spigot());
+            inventory.setItem(31, LightFilter.getMenuItem(gamePlayer).spigot());
+
 
 
 

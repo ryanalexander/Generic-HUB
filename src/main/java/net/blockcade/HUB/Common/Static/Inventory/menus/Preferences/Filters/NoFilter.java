@@ -6,15 +6,15 @@ import net.blockcade.HUB.Common.Utils.Item;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-public class OpenFilter {
+public class NoFilter {
 
     public static Item getMenuItem(GamePlayer gameplayer) {
-        ItemStack is = new ItemStack(Material.LIME_DYE);
+        ItemStack is = new ItemStack(Material.RED_STAINED_GLASS_PANE);
 
-        Item item = new Item(is,"&2OPEN &bfilter");
+        Item item = new Item(is,"&cNo Filter");
         if(gameplayer.getPreferenceSettings().getFilterVisibility().equals(FilterVisibility.OPEN))
             item.setEnchanted(true);
-        item.setLore("","&7no filter will be applied","");
+        item.setLore("&7no filter will be applied to chat messages.","&cNetwork wide blacklist still applies.","&818+");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.OPEN);
         });
