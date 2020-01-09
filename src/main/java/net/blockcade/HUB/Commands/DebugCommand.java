@@ -31,7 +31,7 @@ import java.util.Map;
 import static net.blockcade.HUB.Main.GamePlayers;
 import static net.blockcade.HUB.Main.network;
 
-public class debug implements CommandExecutor {
+public class DebugCommand implements CommandExecutor {
 
     // TODO Remove this entire file
 

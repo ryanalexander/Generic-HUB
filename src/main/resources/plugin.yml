@@ -8,10 +8,7 @@ commands:
     description: Testing command, remove
   fly:
     description: Toggle flight for players.
-    aliases:
-      - togglefly
-      - flight
-      - haxon
+    aliases: [togglefly, flight, stuck, imstuck, haxon, hax]
   queue:
     description: Queue for specific gamemode
     aliases:

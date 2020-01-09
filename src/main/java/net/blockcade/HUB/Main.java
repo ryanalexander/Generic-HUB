@@ -14,12 +14,11 @@
 package net.blockcade.HUB;
 
 import net.blockcade.HUB.Commands.QueueCommand;
-import net.blockcade.HUB.Commands.debug;
-import net.blockcade.HUB.Commands.fly;
-import net.blockcade.HUB.Commands.spawn;
+import net.blockcade.HUB.Commands.DebugCommand;
+import net.blockcade.HUB.Commands.FlyCommand;
+import net.blockcade.HUB.Commands.SpawnCommand;
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameSearch;
-import net.blockcade.HUB.Common.Static.GameServer;
 import net.blockcade.HUB.Common.Static.RankManager;
 import net.blockcade.HUB.Common.Utils.*;
 import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
@@ -77,9 +76,9 @@ public class Main extends JavaPlugin {
         /*
          * Register required commands
          */
-        Objects.requireNonNull(getCommand("debug")).setExecutor(new debug());
-        Objects.requireNonNull(getCommand("fly")).setExecutor(new fly());
-        Objects.requireNonNull(getCommand("spawn")).setExecutor(new spawn());
+        Objects.requireNonNull(getCommand("debug")).setExecutor(new DebugCommand());
+        Objects.requireNonNull(getCommand("fly")).setExecutor(new FlyCommand());
+        Objects.requireNonNull(getCommand("spawn")).setExecutor(new SpawnCommand());
 
         Objects.requireNonNull(getCommand("queue")).setExecutor(new QueueCommand());
         Objects.requireNonNull(getCommand("queue")).setTabCompleter(new QueueCommand());
