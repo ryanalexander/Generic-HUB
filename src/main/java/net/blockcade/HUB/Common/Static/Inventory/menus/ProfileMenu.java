@@ -1,5 +1,7 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
+import net.blockcade.HUB.Common.GameParty;
+import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.Inventory.Manager;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
@@ -14,13 +16,14 @@ import org.bukkit.inventory.meta.SkullMeta;
 public class ProfileMenu {
 
     public static Item getMenuItem(Player player) {
+        GamePlayer gamePlayer = GamePlayer.getGamePlayer(player);
         ItemStack is = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta sm = (SkullMeta)is.getItemMeta();
         if(player!=null)sm.setOwningPlayer(player);
         is.setItemMeta(sm);
         Item item = new Item(is,"&bProfile &7(Right Click)");
 
-        item.setLore("","&7Click to open your Profile","");
+        item.setLore("&7Rank: "+ gamePlayer.getRank().getFormatted(),"&7Level: &e"+ gamePlayer.getLevel());
         item.setOnClick(new Item.click() {
             @Override
             public void run(Player p) {
