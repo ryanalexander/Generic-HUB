@@ -17,7 +17,7 @@ public class LowQuality {
         Item item = new Item(is,"&aLow Quality");
         if(gameplayer.getPreferenceSettings().getVisualQuality().equals(VisualQuality.LOW))
             item.setEnchanted(true);
-        item.setLore("&7With &aLow Quality &7objects will have","a general shape but no precision");
+        item.setLore("&7With &aLow Quality &7objects will have","&7a general shape but no precision");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setVisualQuality(VisualQuality.LOW);
             p.openInventory(Visual.getMenu(p));

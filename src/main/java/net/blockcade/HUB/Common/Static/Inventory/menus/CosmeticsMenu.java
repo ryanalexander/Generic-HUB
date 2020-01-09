@@ -19,13 +19,8 @@ public class CosmeticsMenu {
         ItemStack cosmetics_item = Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjg1OWUyZjAyOGIyOTU2ZGFlNzBhZDAxODE1NjhmYjBlY2ZkNzRkYjJiZTBmOWE1ZWYzNGQyODY3YzM3Zjc2OSJ9fX0=");
         Item item = new Item(cosmetics_item,"&aCosmetics &7(Right Click)");
 
-        item.setLore(new String[]{"","&7Click to open Cosmetics menu",""});
-        item.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(CosmeticsMenu.getMenu(p,null));
-            }
-        });
+        item.setLore("","&7Click to open Cosmetics menu","");
+        item.setOnClick(p -> p.openInventory(CosmeticsMenu.getMenu(p,null)));
         return item;
     }
 
