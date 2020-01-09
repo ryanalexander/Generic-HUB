@@ -108,7 +108,7 @@ public class PreferenceSettings {
                 "`particle_quality`='%s', " +
                 "`party_privacy`='%s', " +
                 "`chat_filter`='%s' " +
-                "WHERE `uuid`='%s';",flight,playerVisibility,petVisibility,chatVisibility,"MEDIUM","ALL_INVITE",filterVisibility,player.getUuid()),true);
+                "WHERE `uuid`='%s';",flight?1:0,playerVisibility,petVisibility,chatVisibility,"MEDIUM","ALL_INVITE",filterVisibility,player.getUuid()),true);
     }
 
     public void BuildPreferences() {
