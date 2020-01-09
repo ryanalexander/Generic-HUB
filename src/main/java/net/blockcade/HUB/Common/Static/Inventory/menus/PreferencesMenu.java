@@ -2,6 +2,7 @@ package net.blockcade.HUB.Common.Static.Inventory.menus;
 
 import net.blockcade.HUB.Common.Static.Inventory.Manager;
 import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Censorship;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Visual;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -48,7 +49,8 @@ public class PreferencesMenu {
 
         inventory.setItem(30, privacy.spigot());
         inventory.setItem(31, Censorship.getMenuItem().spigot());
-        inventory.setItem(32, visuals.spigot());
+        inventory.setItem(32, Visual.getMenuItem().spigot());
+
 
         return inventory;
     }
