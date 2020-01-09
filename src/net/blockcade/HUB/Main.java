@@ -33,6 +33,8 @@ import java.util.Objects;
 
 public class Main extends JavaPlugin {
 
+    // A comment
+
     // GamePlayer cache
     public static HashMap<Player, GamePlayer> GamePlayers;
     public static HashMap<GamePlayer, GameSearch> Searching;
