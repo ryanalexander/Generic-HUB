@@ -13,10 +13,7 @@
 
 package net.blockcade.HUB.Common;
 
-import net.blockcade.HUB.Common.Static.Preferances.ChatVisibility;
-import net.blockcade.HUB.Common.Static.Preferances.FilterVisibility;
-import net.blockcade.HUB.Common.Static.Preferances.PetVisibility;
-import net.blockcade.HUB.Common.Static.Preferances.PlayerVisibility;
+import net.blockcade.HUB.Common.Static.Preferances.*;
 import net.blockcade.HUB.Common.Utils.SQL;
 import net.blockcade.HUB.Main;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -29,7 +26,8 @@ import static net.blockcade.HUB.Common.Static.Preferances.FilterVisibility.OPEN;
 public class PreferenceSettings {
 
     GamePlayer player;
-    FilterVisibility filterVisibility = OPEN;
+    FilterVisibility filterVisibility;
+    VisualQuality visualQuality = VisualQuality.LOW;
     PlayerVisibility playerVisibility;
     ChatVisibility chatVisibility;
     PetVisibility petVisibility;
@@ -53,6 +51,10 @@ public class PreferenceSettings {
         return chatVisibility;
     }
 
+    public VisualQuality getVisualQuality() {
+        return visualQuality;
+    }
+
     public GamePlayer getPlayer() {
         return player;
     }
@@ -74,6 +76,10 @@ public class PreferenceSettings {
     public void setPetVisibility(PetVisibility petVisibility) {
         this.petVisibility = petVisibility;
         SavePreferences();
+    }
+
+    public void setVisualQuality(VisualQuality visualQuality) {
+        this.visualQuality = visualQuality;
     }
 
     public void setFilterVisibility(FilterVisibility filterVisibility) {
