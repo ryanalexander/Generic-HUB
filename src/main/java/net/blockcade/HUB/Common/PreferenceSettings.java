@@ -22,12 +22,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static net.blockcade.HUB.Common.Static.Preferances.FilterVisibility.OPEN;
+import static net.blockcade.HUB.Common.Static.Preferances.VisualQuality.LOW;
 
 public class PreferenceSettings {
 
     GamePlayer player;
-    FilterVisibility filterVisibility;
-    VisualQuality visualQuality = VisualQuality.LOW;
+    FilterVisibility filterVisibility = OPEN;
+    VisualQuality visualQuality = LOW;
     PlayerVisibility playerVisibility;
     ChatVisibility chatVisibility;
     PetVisibility petVisibility;

@@ -39,17 +39,14 @@ public class PreferencesMenu {
          * Categories for Cosmetics
          */
         Item privacy = new Item(Material.PAPER,"&fPrivacy");
-        Item visuals = new Item(Material.LEGACY_FIRE,"&fVisuals");
 
         privacy.setLore("&fThis menu is coming soon");
-        visuals.setLore("&fThis menu is coming soon");
 
         privacy.setOnClick((p)->{p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);});
-        visuals.setOnClick((p)->{p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO,1,1);});
 
-        inventory.setItem(30, privacy.spigot());
+        inventory.setItem(29, privacy.spigot());
         inventory.setItem(31, Censorship.getMenuItem().spigot());
-        inventory.setItem(32, Visual.getMenuItem().spigot());
+        inventory.setItem(33, Visual.getMenuItem().spigot());
 
 
         return inventory;

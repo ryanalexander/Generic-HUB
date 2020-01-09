@@ -123,6 +123,7 @@ public class Player implements Listener {
                 }else {
                     player.sendMessage("&dDid you know, if you purchase a rank your arrival will be announced!");
                 }
+                player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(event.getPlayer()).spigot());
                 player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
 
                 event.getPlayer().setLevel(player.getLevel());
@@ -144,7 +145,6 @@ public class Player implements Listener {
         player.spigot().getInventory().clear();
 
         player.spigot().getInventory().setItem(0, GameMenu.getMenuItem().spigot());
-        player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(event.getPlayer()).spigot());
         player.spigot().getInventory().setItem(4, CosmeticsMenu.getMenuItem().spigot());
         player.spigot().getInventory().setItem(8, HubMenu.getMenuItem().spigot());
 
