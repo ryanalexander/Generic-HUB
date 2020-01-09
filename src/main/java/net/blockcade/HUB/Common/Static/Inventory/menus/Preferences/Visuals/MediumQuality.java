@@ -2,6 +2,7 @@ package net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Visuals;
 
 import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Censorship;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Visual;
 import net.blockcade.HUB.Common.Static.Preferances.FilterVisibility;
 import net.blockcade.HUB.Common.Static.Preferances.VisualQuality;
 import net.blockcade.HUB.Common.Utils.Item;
@@ -19,7 +20,7 @@ public class MediumQuality {
         item.setLore("&7With &6Medium Quality &7objects will be shaped but blurry around the edges");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setVisualQuality(VisualQuality.MEDIUM);
-            p.openInventory(Censorship.getMenu(p));
+            p.openInventory(Visual.getMenu(p));
         });
         return item;
     }
