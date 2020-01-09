@@ -1,6 +1,7 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Censorship;
 import net.blockcade.HUB.Common.Static.Preferances.FilterVisibility;
 import net.blockcade.HUB.Common.Utils.Item;
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ public class MediumFilter {
         item.setLore("","&7With &eMedium Filter &7No cursing is shown,","&7and suggestive terms are not displayed.","&cNetwork Blacklist still applies.","&b[Ages 10 to 15]");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.MEDIUM);
+            p.openInventory(Censorship.getMenu(p));
         });
         return item;
     }

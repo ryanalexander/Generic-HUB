@@ -31,7 +31,7 @@ public class Censorship {
             return item;
         }
 
-        private static Inventory getMenu(Player player){
+        public static Inventory getMenu(Player player){
             Inventory inventory = Bukkit.createInventory(null,54, Text.format("&7Particles"));
             GamePlayer gamePlayer = GamePlayer.getGamePlayer(player);
 

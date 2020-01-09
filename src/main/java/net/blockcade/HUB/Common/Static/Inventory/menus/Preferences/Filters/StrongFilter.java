@@ -1,6 +1,7 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Censorship;
 import net.blockcade.HUB.Common.Static.Preferances.FilterVisibility;
 import net.blockcade.HUB.Common.Utils.Item;
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ public class StrongFilter {
         item.setLore("&7With &aStrong Filter &7Only family friendly messages are displayed.","&b[Ages 10 and below]");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.STRICT);
+            p.openInventory(Censorship.getMenu(p));
         });
         return item;
     }

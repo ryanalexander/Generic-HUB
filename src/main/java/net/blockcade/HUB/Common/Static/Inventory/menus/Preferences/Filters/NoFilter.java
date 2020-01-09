@@ -1,6 +1,7 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Filters;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Preferences.Censorship;
 import net.blockcade.HUB.Common.Static.Preferances.FilterVisibility;
 import net.blockcade.HUB.Common.Utils.Item;
 import org.bukkit.Material;
@@ -17,6 +18,7 @@ public class NoFilter {
         item.setLore("&7no filter will be applied to chat messages.","&cNetwork wide blacklist still applies.","&818+");
         item.setOnClick(p -> {
             GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.OPEN);
+            p.openInventory(Censorship.getMenu(p));
         });
         return item;
     }
