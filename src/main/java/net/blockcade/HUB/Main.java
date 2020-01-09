@@ -38,7 +38,6 @@ public class Main extends JavaPlugin {
     // GamePlayer cache
     public static HashMap<Player, GamePlayer> GamePlayers;
     public static HashMap<GamePlayer, GameSearch> Searching;
-    public static GameServer server;
     public static WingAPI wingAPI;
     public static ParticleManager particleManager;
     public static JedisPool pool;
