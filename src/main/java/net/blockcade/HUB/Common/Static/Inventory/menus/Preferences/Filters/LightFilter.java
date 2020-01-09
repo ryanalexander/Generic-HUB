@@ -12,11 +12,11 @@ public class LightFilter {
         ItemStack is = new ItemStack(Material.ORANGE_STAINED_GLASS_PANE);
 
         Item item = new Item(is,"&6Light Filter");
-        if(gameplayer.getPreferenceSettings().getFilterVisibility().equals(FilterVisibility.OPEN))
+        if(gameplayer.getPreferenceSettings().getFilterVisibility().equals(FilterVisibility.LIGHT))
             item.setEnchanted(true);
         item.setLore("&7With &6Light Filter &7a Moderate level of cusing is shown.","&cNetwork wide blacklist still applies.","&b[Ages 15 to 18]");
         item.setOnClick(p -> {
-            GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.OPEN);
+            GamePlayer.getGamePlayer(p).getPreferenceSettings().setFilterVisibility(FilterVisibility.LIGHT);
         });
         return item;
     }
