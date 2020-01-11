@@ -38,17 +38,14 @@ public class MorphMenu {
             Item back = new Item(Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODY1MmUyYjkzNmNhODAyNmJkMjg2NTFkN2M5ZjI4MTlkMmU5MjM2OTc3MzRkMThkZmRiMTM1NTBmOGZkYWQ1ZiJ9fX0="),"&eBack");
             back.setLore("&7Return to Cosmetics Menu");
             back.setOnClick((p)->{
-                p.openInventory(CosmeticsMenu.getMenu(p));
+                p.openInventory(CosmeticsMenu.getMenu(p,null));
             });
             inventory.setItem(0,back.spigot());
 
-            inventory.setItem(29, NoFilter.getMenuItem(gamePlayer).spigot());
-            inventory.setItem(32, MediumFilter.getMenuItem(gamePlayer).spigot());
-            inventory.setItem(34, StrongFilter.getMenuItem(gamePlayer).spigot());
-            inventory.setItem(31, LightFilter.getMenuItem(gamePlayer).spigot());
+            Item zombie_head = new Item(Item.itemWithBase64(new ItemStack(Material.PLAYER_HEAD),"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMTQzNjc5Njg4ZDYyNjZhOTY3OWIzOGU1YjVlM2M2MGFhYzY0NGY2MWVlZjI3NTBiMDYwNTQxODM0MjY4MmM5In19fQ=="),"&1Zombie");
+            zombie_head.setLore("&7With this Morph you will be shown as","a &1Zombie&7 to all players on the Network","","&aClick to Transform");
 
-
-
+            inventory.setItem(29, zombie_head.spigot());
 
             return inventory;
     }
