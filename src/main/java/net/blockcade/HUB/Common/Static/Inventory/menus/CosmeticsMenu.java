@@ -1,6 +1,7 @@
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
 import net.blockcade.HUB.Common.Static.Inventory.Manager;
+import net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetic.MorphMenu;
 import net.blockcade.HUB.Common.Static.Inventory.menus.Cosmetic.Particles;
 import net.blockcade.HUB.Common.Utils.Item;
 import net.blockcade.HUB.Common.Utils.Text;
@@ -10,6 +11,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 
 public class CosmeticsMenu {
 
@@ -45,7 +47,7 @@ public class CosmeticsMenu {
         inventory.setItem(30,heads.spigot());
         inventory.setItem(31,costumes.spigot());
         inventory.setItem(32,pets.spigot());
-        inventory.setItem(33,morphs.spigot());
+        inventory.setItem(33, MorphMenu.getMenuItem().spigot());
 
         return inventory;
     }
