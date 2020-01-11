@@ -34,6 +34,7 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -155,6 +156,12 @@ public class Player implements Listener {
         // Remove cachedGamePlayer
         event.setQuitMessage(null);
         Main.GamePlayers.remove(event.getPlayer());
+    }
+
+    @EventHandler
+    public void PlayerMove(PlayerMoveEvent e){
+        if (e.getTo().getY()<100)
+            e.getPlayer().teleport(e.getTo().getWorld().getSpawnLocation());
     }
 
     @EventHandler
