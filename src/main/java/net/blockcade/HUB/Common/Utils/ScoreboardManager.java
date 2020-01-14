@@ -24,6 +24,7 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -137,7 +138,7 @@ public class ScoreboardManager {
                     text=text.replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + "")
                              .replaceAll(":rank:", gamePlayer.getRank().name())
                              .replaceAll(":level:", gamePlayer.getLevel()+"")
-                             .replaceAll(":tokens:", gamePlayer.getTokens()+"")
+                             .replaceAll(":tokens:", (new DecimalFormat("###,###,###").format(gamePlayer.getTokens()))+"")
                              .replaceAll(":server_name:", Main.network.serverName);
                 }
                 for(Map.Entry<String, placeholder> replacements : placeholders.entrySet()){
