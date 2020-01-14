@@ -40,6 +40,7 @@ public class GamePlayer {
     private boolean isBuilt=false;
     private String name;
     private int level=0;
+    private int tokens=0;
     private Ranks rank=Ranks.MEMBER;
     private GameParty party=null;
 
@@ -47,7 +48,7 @@ public class GamePlayer {
     private long friends_last_fetch = 0;
 
     /**
-     *
+     * Initialize GamePlayer
      * @param player Bukkit Player to be resolved from SQL Database.
      */
     public GamePlayer(Player player){this.player=player;this.name=player.getName();this.uuid=player.getUniqueId();}
@@ -79,7 +80,7 @@ public class GamePlayer {
     public void sendActionBar(String message) { Text.sendMessage(player,message, Text.MessageType.ACTION_BAR); }
 
     /**
-     *
+     * Send player to GameServer
      * @param server BungeeCord server in which to send the player to
      */
     public void sendServer(GameServer server) {
@@ -97,7 +98,7 @@ public class GamePlayer {
     }
 
     /**
-     *
+     * Get player Minecraft uuid (Online)
      * @return GamePlayer UUID (Online Version)
      * @since 5/08/2019
      */
@@ -106,8 +107,8 @@ public class GamePlayer {
     }
 
     /**
-     *
-     * @return Get GamePlayer rank
+     * Get player rank
+     * @return Ranks enum of player rank
      * @since 5/08/2019
      */
     public Ranks getRank() {
@@ -116,7 +117,7 @@ public class GamePlayer {
     }
 
     /**
-     *
+     * Get player network-wide level
      * @return Player network wide level
      */
     public int getLevel() {
@@ -124,12 +125,21 @@ public class GamePlayer {
     }
 
     /**
-     *
+     * Get user token count
+     * @return Integer token count
+     */
+    public int getTokens() {
+        return tokens;
+    }
+
+    /**
+     * Get player Nickname
      * @return Player display name (Nickname)
      */
     public String getName() {
         return name;
     }
+
     /**
      * TODO BungeeCord implementation for parties
      * @return Player party, fetched by BungeeCord if updated.
@@ -141,7 +151,7 @@ public class GamePlayer {
     }
 
     /**
-     *
+     * Check if player is Friends with a GamePlayer
      * TODO Add database integration
      * @param player Target player to check relationship to
      * @return Weather the two players are friends
@@ -150,6 +160,10 @@ public class GamePlayer {
         return getFriends().contains(player);
     }
 
+    /**
+     * Fetch player friend list
+     * @return Arraylist of GamePlayers
+     */
     public ArrayList<GamePlayer> getFriends(){
         ArrayList<GamePlayer> friends = new ArrayList<>();
 
@@ -186,7 +200,7 @@ public class GamePlayer {
     }
 
     /**
-     *
+     * Change player rank
      * @param rank set a player rank, use with caution!
      * @since 5/08/2019
      */
@@ -197,7 +211,30 @@ public class GamePlayer {
     }
 
     /**
-     *
+     * Change player token count
+     * @param tokens Integer to set token count as
+     */
+    public void setTokens(int tokens) {
+        if(!isBuilt)throw new Error("Failed setting rank, the specified GamePlayer has not been built.");
+        this.tokens = tokens;
+        Main.getSqlConnection().query(String.format("UPDATE `players` SET `tokens`='%s' WHERE `uuid`='%s'",tokens,uuid),true);
+    }
+
+    /**
+     * Offset player tokens
+     * @param add + true | - false
+     * @param tokens Offset amount
+     */
+    public void offsetTokens(boolean add, int tokens) {
+        if(add){
+            setTokens(getTokens()+tokens);
+        }else {
+            setTokens(getTokens()-tokens);
+        }
+    }
+
+    /**
+     * Override player Party
      * @param party Override existing GameParty, use of this function can cause issues!
      * @since 5/08/2019
      */
@@ -223,6 +260,7 @@ public class GamePlayer {
                 this.name=results.getString("username");
                 this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
                 this.level=results.getInt("level");
+                this.tokens=results.getInt("tokens");
                 this.uuid=(UUID.fromString(results.getString("uuid")));
                 if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
             }

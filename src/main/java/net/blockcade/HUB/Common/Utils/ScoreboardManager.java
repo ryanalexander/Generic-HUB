@@ -14,18 +14,25 @@
 package net.blockcade.HUB.Common.Utils;
 
 import net.blockcade.HUB.Common.GamePlayer;
+import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 
 public class ScoreboardManager {
+    private static int sbs = 0;
     private org.bukkit.scoreboard.ScoreboardManager manager;
     private String name;
     private Scoreboard board;
@@ -42,8 +49,19 @@ public class ScoreboardManager {
         this.name = name;
         this.manager = Bukkit.getServer().getScoreboardManager();
         this.board = this.manager.getNewScoreboard();
-        this.objective = this.board.registerNewObjective(Text.format(name), "dummy");
+        this.objective = this.board.registerNewObjective("SB"+sbs, "dummy",Text.format(name));
         this.objective.setDisplaySlot(DisplaySlot.SIDEBAR);
+        new BukkitRunnable(){
+            @Override
+            public void run() {
+                try {
+                    ScoreboardManager.this.update();
+                }catch (Exception e){
+                    cancel();
+                }
+            }
+        }.runTaskTimer(Main.getPlugin(Main.class),0L,2L);
+        sbs++;
     }
 
     public void setGamePlayer(GamePlayer gamePlayer) {
@@ -77,7 +95,7 @@ public class ScoreboardManager {
             message = message + this.payload;
         }
 
-        this.addLine(message.replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + ""));
+        this.addLine(message);
         this.lines.put(this.counter, message);
         ++this.payload_count;
         this.update();
@@ -115,13 +133,19 @@ public class ScoreboardManager {
             int pid = this.objective.getScore(str).getScore();
             String text = this.lines.get(pid);
             if(text != null) {
+                if(gamePlayer!=null) {
+                    text=text.replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + "")
+                             .replaceAll(":rank:", gamePlayer.getRank().name())
+                             .replaceAll(":level:", gamePlayer.getLevel()+"")
+                             .replaceAll(":tokens:", gamePlayer.getTokens()+"")
+                             .replaceAll(":server_name:", Main.network.serverName);
+                }
+                for(Map.Entry<String, placeholder> replacements : placeholders.entrySet()){
+                    text=text.replaceAll(replacements.getKey(), (replacements.getValue().String(gamePlayer)));
+                }
                 if ((!ChatColor.stripColor(Text.format(text)).equals(ChatColor.stripColor(str)))) {
                     this.board.resetScores(str);
-                    this.objective.getScore(Text.format(text
-                            .replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + "")
-                            .replaceAll(":rank:", gamePlayer.getRank().name())
-                            .replaceAll(":level:", gamePlayer.getLevel()+"")
-                            .replaceAll(":server_name:", Main.network.serverName))
+                    this.objective.getScore(Text.format(text)
                     ).setScore(pid);
                 }
             }
@@ -134,7 +158,7 @@ public class ScoreboardManager {
     }
 
     public interface placeholder {
-        int Integer(GamePlayer player);
+        String String(GamePlayer player);
     }
 
     public void showFor(Player player) {

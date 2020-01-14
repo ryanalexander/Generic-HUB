@@ -81,6 +81,9 @@ public class Player implements Listener {
                         sm.addLine("&b&lLevel");
                         sm.addLine(" :level:");
                         sm.addBlank();
+                        sm.addLine("&c&lTokens");
+                        sm.addLine(" :tokens:");
+                        sm.addBlank();
                         sm.addLine("&8:server_name: &8- &dblockcade.net");
                         sm.addBlank();
                         sm.showFor(player.spigot());
