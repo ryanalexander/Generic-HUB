@@ -95,7 +95,7 @@ public class Networking {
             public void run() {
                 pushData();
             }
-        }.runTaskTimer(plugin, 0L, (20 * 5));
+        }.runTaskTimer(plugin, 0L, (10));
     }
 
     public String getContainer() {
