@@ -17,6 +17,7 @@ import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameServer;
 import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Common.Static.Variables.Ranks;
+import net.blockcade.HUB.Common.Utils.NPC.PlayerNPC;
 import net.blockcade.HUB.Common.Utils.Servers;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
@@ -37,9 +38,24 @@ public class DebugCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String arg, String[] args) {
-        if (!sender.isOp()&& GamePlayers.get((Player)sender).getRank().getLevel()< Ranks.HELPER.getLevel()) {
+        if (!sender.isOp()&& GamePlayers.get(sender).getRank().getLevel()< Ranks.HELPER.getLevel()) {
             sender.sendMessage(Text.format("&cYou must be %s&c or higher to execute that command.",Ranks.HELPER.getFormatted()));
             return false;
+        }
+
+        if(args.length>=1) {
+            if (args[0].equalsIgnoreCase("servers")) {
+                for (Map.Entry<Game, ArrayList<GameServer>> servers : Servers.getAvailableServers().entrySet()) {
+                    sender.sendMessage("--[ " + servers.getKey().getName() + " ]--");
+                    for (GameServer server : servers.getValue()) {
+                        sender.sendMessage(server.getName() + " / " + server.getState() + " / " + server.getGame() + " / " + server.getPlayercount());
+                    }
+                }
+                return false;
+            }else if(args[0].equalsIgnoreCase("npc")){
+                Player player = (Player)sender;
+                new PlayerNPC("&cIt's bob",player.getLocation());
+            }
         }
 
         sender.sendMessage(Text.format("&a]---------------["));
@@ -63,15 +79,6 @@ public class DebugCommand implements CommandExecutor {
             sender.sendMessage(Text.format("&aPet Visibility: &e" + gamePlayer.getPreferenceSettings().getPetVisibility()));
             sender.sendMessage(Text.format("&aChat Visibility: &e" + gamePlayer.getPreferenceSettings().getChatVisibility()));
             sender.sendMessage(Text.format("&a]---------------["));
-
-            if(args.length>=1&&args[0].equalsIgnoreCase("servers")){
-                for(Map.Entry<Game, ArrayList<GameServer>> servers : Servers.getAvailableServers().entrySet()){
-                    sender.sendMessage("--[ "+servers.getKey().getName()+" ]--");
-                    for(GameServer server : servers.getValue()){
-                        sender.sendMessage(server.getName()+" / "+server.getState()+" / "+server.getGame()+" / "+server.getPlayercount());
-                    }
-                }
-            }
         }
 
         return false;

@@ -21,6 +21,7 @@ import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameSearch;
 import net.blockcade.HUB.Common.Static.RankManager;
 import net.blockcade.HUB.Common.Utils.*;
+import net.blockcade.HUB.Common.Utils.NPC.NPCEntity;
 import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -58,6 +59,7 @@ public class Main extends JavaPlugin {
          */
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new net.blockcade.HUB.Common.Events.Player(),this);
+        pm.registerEvents(new NPCEntity(this),this);
         pm.registerEvents(new Item(), this);
 
         // Initialize ranks

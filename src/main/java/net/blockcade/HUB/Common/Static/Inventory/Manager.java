@@ -34,7 +34,7 @@ public class Manager {
         for(int i=9;i<18;i++){ inventory.setItem(i,placeholder.spigot()); }
 
         inventory.setItem(3, FriendsMenu.getMenuItem().spigot());
-        inventory.setItem(4, ProfileMenu.getMenuItem(player.spigot()).spigot());
+        inventory.setItem(4, ProfileMenu.getMenuItem(player.spigot(),true).spigot());
         inventory.setItem(5,party.spigot());
 
     }
