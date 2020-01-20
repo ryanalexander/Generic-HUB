@@ -41,7 +41,7 @@ public class GamePlayer {
     private String name;
     private int level=0;
     private int tokens=0;
-    private Badge[] badges;
+    private Badge[] badges=new Badge[]{};
     private Ranks rank=Ranks.MEMBER;
     private GameParty party=null;
 
