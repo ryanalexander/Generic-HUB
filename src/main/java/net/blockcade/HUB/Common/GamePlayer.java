@@ -24,6 +24,7 @@ import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.SQL;
 import net.blockcade.HUB.Common.Utils.Text;
 import net.blockcade.HUB.Main;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
@@ -41,7 +42,7 @@ public class GamePlayer {
     private String name;
     private int level=0;
     private int tokens=0;
-    private Badge[] badges=new Badge[]{};
+    private List<Badge> badges=new ArrayList<>();
     private Ranks rank=Ranks.MEMBER;
     private GameParty party=null;
 
@@ -142,7 +143,7 @@ public class GamePlayer {
     }
 
     public Badge[] getBadges() {
-        return badges;
+        return badges.toArray(new Badge[]{});
     }
     public String getBadgeList() {
         String s = "";
@@ -263,8 +264,7 @@ public class GamePlayer {
     }
 
     public void BuildPlayer() {
-        FileConfiguration config = Main.getPlugin(Main.class).getConfig();
-        SQL sql = new SQL(config.getString("sql.host"),config.getInt("sql.port"),config.getString("sql.user"),config.getString("sql.pass"),config.getString("sql.database"));
+        SQL sql = Main.getSqlConnection();
         String query = "";
         if(this.name!=null)query=String.format("SELECT * FROM `players` WHERE `username`='%s' LIMIT 1;",this.name);
         if(query.equals("")&&this.uuid!=null)query=String.format("SELECT * FROM `players` WHERE `uuid`='%s' LIMIT 1;",this.uuid);
@@ -278,9 +278,7 @@ public class GamePlayer {
                 this.uuid=(UUID.fromString(results.getString("uuid")));
                 for(String s : results.getString("badges").split("[|]")){
                     try {
-                        List<Badge> badges = Arrays.asList(this.badges);
                         badges.add(Badge.valueOf(s.toUpperCase()));
-                        this.badges=badges.toArray(new Badge[]{});
                     }catch (Exception e){
                         e.printStackTrace();
                     }
@@ -295,7 +293,6 @@ public class GamePlayer {
             e.printStackTrace();
             System.out.println("| ---------------------------- |");
         }
-        sql.close();
         if(!isBuilt){
             player.kickPlayer(Text.format("&cAn error has occurred in the connection, try again later."));
         }

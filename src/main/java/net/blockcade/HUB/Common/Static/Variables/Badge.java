@@ -16,9 +16,9 @@ package net.blockcade.HUB.Common.Static.Variables;
 import org.bukkit.ChatColor;
 
 public enum Badge {
-    STAFF('♔', ChatColor.RED,"Blockcade Staff"),
+    STAFF('۞', ChatColor.RED,"Blockcade Staff"),
     BETA('✪', ChatColor.BLUE,"Beta Tester"),
-    SUPPORTER('♡',ChatColor.GREEN,"Supporter");
+    SUPPORTER('⛨',ChatColor.GREEN,"Supporter");
 
     char badge;
     ChatColor color;
