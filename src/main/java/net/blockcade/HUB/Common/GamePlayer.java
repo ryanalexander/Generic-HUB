@@ -18,6 +18,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import net.blockcade.HUB.Common.Static.GameSearch;
 import net.blockcade.HUB.Common.Static.GameServer;
+import net.blockcade.HUB.Common.Static.Variables.Badge;
 import net.blockcade.HUB.Common.Static.Variables.Game;
 import net.blockcade.HUB.Common.Static.Variables.Ranks;
 import net.blockcade.HUB.Common.Utils.SQL;
@@ -28,9 +29,7 @@ import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.UUID;
+import java.util.*;
 
 public class GamePlayer {
 
@@ -42,6 +41,7 @@ public class GamePlayer {
     private String name;
     private int level=0;
     private int tokens=0;
+    private Badge[] badges;
     private Ranks rank=Ranks.MEMBER;
     private GameParty party=null;
 
@@ -139,6 +139,19 @@ public class GamePlayer {
      */
     public String getName() {
         return name;
+    }
+
+    public Badge[] getBadges() {
+        return badges;
+    }
+    public String getBadgeList() {
+        String s = "";
+        for(Badge badge : badges)
+            s+=(badge.getColor()+""+badge.getBadge()+"&r")+" ";
+        return s;
+    }
+    public boolean hasBadge(Badge badge) {
+        return Arrays.asList(badges).contains(badge);
     }
 
     /**
@@ -263,6 +276,15 @@ public class GamePlayer {
                 this.level=results.getInt("level");
                 this.tokens=results.getInt("tokens");
                 this.uuid=(UUID.fromString(results.getString("uuid")));
+                for(String s : results.getString("badges").split("[|]")){
+                    try {
+                        List<Badge> badges = Arrays.asList(this.badges);
+                        badges.add(Badge.valueOf(s.toUpperCase()));
+                        this.badges=badges.toArray(new Badge[]{});
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
+                }
                 if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
             }
             this.isBuilt=true;
