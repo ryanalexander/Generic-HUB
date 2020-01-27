@@ -284,8 +284,8 @@ public class GamePlayer {
                     }
                 }
                 if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
+                this.isBuilt=true;
             }
-            this.isBuilt=true;
             return;
         }catch (SQLException e){
             System.out.println("| ---------------------------- |");

@@ -34,7 +34,7 @@ public class PlayerNPC extends NPCEntity {
     public void build() {
         try {
             Constructor<?> PacketPlayOutNamedEntitySpawn = ReflectionUtil.getNMSClass("PacketPlayOutNamedEntitySpawn").getDeclaredConstructor();
-            ReflectionUtil.getField(PacketPlayOutNamedEntitySpawn.getClass(), "a").set(int.class, 95 + getEntities().size());
+            ReflectionUtil.getField(PacketPlayOutNamedEntitySpawn.getClass(), "a").set(int.class, 95+(getEntities()!=null?getEntities().size():1));
             ReflectionUtil.getField(PacketPlayOutNamedEntitySpawn.getClass(), "b").set(UUID.class, UUID.randomUUID());
             ReflectionUtil.getField(PacketPlayOutNamedEntitySpawn.getClass(), "c").set(double.class, location.getX());
             ReflectionUtil.getField(PacketPlayOutNamedEntitySpawn.getClass(), "d").set(double.class, location.getY());

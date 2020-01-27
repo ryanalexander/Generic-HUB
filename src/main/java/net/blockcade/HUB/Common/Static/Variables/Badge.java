@@ -16,18 +16,20 @@ package net.blockcade.HUB.Common.Static.Variables;
 import org.bukkit.ChatColor;
 
 public enum Badge {
-    STAFF('۞', ChatColor.RED,"Blockcade Staff"),
-    BETA('✪', ChatColor.BLUE,"Beta Tester"),
-    SUPPORTER('⛨',ChatColor.GREEN,"Supporter");
+    STAFF('◈', ChatColor.RED,"Blockcade Staff","eyJ0aW1lc3RhbXAiOjE1Nzk1ODAyNDI4MjIsInByb2ZpbGVJZCI6ImJlY2RkYjI4YTJjODQ5YjRhOWIwOTIyYTU4MDUxNDIwIiwicHJvZmlsZU5hbWUiOiJTdFR2Iiwic2lnbmF0dXJlUmVxdWlyZWQiOnRydWUsInRleHR1cmVzIjp7IlNLSU4iOnsidXJsIjoiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS81OGU3YjM0OTMwNDRmMGIxZmQzNDNkYTM4NDQ2YzRmOTdmNzllYzE4ZWIwZTU4YTdiM2IxMTQ2OGI4ZDE2Mjc5In19fQ=="),
+    BETA('✪', ChatColor.BLUE,"Beta Tester",""),
+    SUPPORTER('⛨',ChatColor.GREEN,"Supporter","");
 
     char badge;
     ChatColor color;
     String name;
+    String texture;
 
-    Badge(char badge, ChatColor color, String name){
+    Badge(char badge, ChatColor color, String name, String texture){
         this.badge=badge;
         this.color=color;
         this.name=name;
+        this.texture=texture;
     }
 
     public String getName() {
