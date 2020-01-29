@@ -40,8 +40,8 @@ public class GamePlayer {
     private PreferenceSettings preferenceSettings;
     private boolean isBuilt=false;
     private String name;
-    private int level=0;
-    private int tokens=0;
+    private int experience = 0;
+    private int tokens = 0;
     private List<Badge> badges=new ArrayList<>();
     private Ranks rank=Ranks.MEMBER;
     private GameParty party=null;
@@ -122,8 +122,21 @@ public class GamePlayer {
      * Get player network-wide level
      * @return Player network wide level
      */
-    public int getLevel() {
-        return level;
+    public double getLevel() {
+        return (Math.sqrt(100*(2*experience+25))+50)/100;
+    }
+
+    public int getExpToNextLevel() {
+        int level = getLevelRound()+1;
+        return experience-((level^2+level)/2*100-(level*100));
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public int getLevelRound(){
+        return (int)getLevel();
     }
 
     /**
@@ -273,7 +286,7 @@ public class GamePlayer {
             while(results.next()){
                 this.name=results.getString("username");
                 this.rank=(Ranks.valueOf(results.getString("rank").toUpperCase()));
-                this.level=results.getInt("level");
+                this.experience=results.getInt("experience");
                 this.tokens=results.getInt("tokens");
                 this.uuid=(UUID.fromString(results.getString("uuid")));
                 for(String s : results.getString("badges").split("[|]")){

@@ -11,19 +11,6 @@
  * @since (DD/MM/YYYY) 18/1/2020
  */
 
-/*
- *
- *  *
- *  * © Stelch Software 2019, distribution is strictly prohibited
- *  * Blockcade is a company of Stelch Software
- *  *
- *  * Changes to this file must be documented on push.
- *  * Unauthorised changes to this file are prohibited.
- *  *
- *  * @author Ryan Wood
- *  @since 5/8/2019
- */
-
 package net.blockcade.HUB.Common.Events;
 
 import net.blockcade.HUB.Common.GamePlayer;
@@ -143,7 +130,7 @@ public class Player implements Listener {
                 player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(event.getPlayer(),false).spigot());
                 player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
 
-                event.getPlayer().setLevel(player.getLevel());
+                event.getPlayer().setLevel(player.getLevelRound());
             }
         }.start();
 
