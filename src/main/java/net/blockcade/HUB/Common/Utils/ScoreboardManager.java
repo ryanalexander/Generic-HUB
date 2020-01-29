@@ -139,9 +139,15 @@ public class ScoreboardManager {
                     int experience = gamePlayer.getExperience();
                     int experience_required = gamePlayer.getExpToNextLevel();
                     int e = (experience/(experience+experience_required))*10;
-                    String level = "";
-                    for (int i = 0; i < 10; i++)
-                        level += ((i < e) ? "&a" : "&7") + "&l◆";
+                    String level = "&a&l";
+                    boolean change = false;
+                    for (int i = 0; i < 10; i++) {
+                        if((i < e)&&!change){
+                            change=true;
+                            level+="&7&l";
+                        }
+                        level += "◆";
+                    }
                     text=text.replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + "")
                              .replaceAll(":rank:", gamePlayer.getRank().name())
                              .replaceAll(":level:", gamePlayer.getLevelRound()+" &7["+level+"&7]")
