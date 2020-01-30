@@ -123,12 +123,12 @@ public class GamePlayer {
      * @return Player network wide level
      */
     public double getLevel() {
-        return (Math.sqrt(100*(2*experience+25))+50)/100;
+        return (int) (Math.floor(25 + Math.sqrt(625 + 100 * experience))/50);
     }
 
     public int getExpToNextLevel() {
-        int level = getLevelRound()+1;
-        return experience-((level^2+level)/2*100-(level*100));
+        int L = (int)getLevel()+1;
+        return 25 * L * L - 25 * L;
     }
 
     public int getExperience() {
