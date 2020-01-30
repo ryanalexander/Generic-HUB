@@ -138,7 +138,7 @@ public class ScoreboardManager {
                 if(gamePlayer!=null) {
                     int experience = gamePlayer.getExperience();
                     int experience_required = gamePlayer.getExpToNextLevel();
-                    int e = (experience/(experience+experience_required))*10;
+                    int e = (experience) * (experience_required / 25);
                     String level = "&a&l";
                     for(int i=0;i<10;i++){
                         if(i==(e/10))
