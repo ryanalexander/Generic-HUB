@@ -143,7 +143,7 @@ public class ScoreboardManager {
                     for(int i=0;i<10;i++){
                         if(i==(e/10))
                             level+="&7&l";
-                        level += "◆";
+                        level += (i>(e/10)?"◆":"-");
                     }
 
                     text=text.replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + "")
