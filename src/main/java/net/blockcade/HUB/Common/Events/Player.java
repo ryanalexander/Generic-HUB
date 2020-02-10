@@ -1,14 +1,14 @@
 /*
  *
- *  *
- *  * © Stelch Software 2019, distribution is strictly prohibited
- *  * Blockcade is a company of Stelch Software
- *  *
- *  * Changes to this file must be documented on push.
- *  * Unauthorised changes to this file are prohibited.
- *  *
- *  * @author Ryan Wood
- *  @since 5/8/2019
+ *
+ *  © Stelch Software 2020, distribution is strictly prohibited
+ *  Blockcade is a company of Stelch Software
+ *
+ *  Changes to this file must be documented on push.
+ *  Unauthorised changes to this file are prohibited.
+ *
+ *  @author Ryan W
+ * @since (DD/MM/YYYY) 18/1/2020
  */
 
 package net.blockcade.HUB.Common.Events;
@@ -81,6 +81,9 @@ public class Player implements Listener {
                         sm.addLine("&b&lLevel");
                         sm.addLine(" :level:");
                         sm.addBlank();
+                        sm.addLine("&c&lTokens");
+                        sm.addLine(" :tokens:");
+                        sm.addBlank();
                         sm.addLine("&8:server_name: &8- &dblockcade.net");
                         sm.addBlank();
                         sm.showFor(player.spigot());
@@ -124,10 +127,10 @@ public class Player implements Listener {
                 }else {
                     player.sendMessage("&dDid you know, if you purchase a rank your arrival will be announced!");
                 }
-                player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(event.getPlayer()).spigot());
+                player.spigot().getInventory().setItem(1, ProfileMenu.getMenuItem(event.getPlayer(),false).spigot());
                 player.spigot().setAllowFlight((player.getRank().getLevel()>1&&player.getPreferenceSettings().isFlight()));
 
-                event.getPlayer().setLevel(player.getLevel());
+                event.getPlayer().setLevel(player.getLevelRound());
             }
         }.start();
 

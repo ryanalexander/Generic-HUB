@@ -1,3 +1,16 @@
+/*
+ *
+ *
+ *  © Stelch Software 2020, distribution is strictly prohibited
+ *  Blockcade is a company of Stelch Software
+ *
+ *  Changes to this file must be documented on push.
+ *  Unauthorised changes to this file are prohibited.
+ *
+ *  @author Ryan W
+ * @since (DD/MM/YYYY) 18/1/2020
+ */
+
 package net.blockcade.HUB.Common.Static.Inventory.menus;
 
 import net.blockcade.HUB.Common.GameParty;
@@ -15,7 +28,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 public class ProfileMenu {
 
-    public static Item getMenuItem(Player player) {
+    public static Item getMenuItem(Player player, boolean inMenu) {
         GamePlayer gamePlayer = GamePlayer.getGamePlayer(player);
         ItemStack is = new ItemStack(Material.PLAYER_HEAD);
         SkullMeta sm = (SkullMeta)is.getItemMeta();
@@ -23,13 +36,16 @@ public class ProfileMenu {
         is.setItemMeta(sm);
         Item item = new Item(is,"&bProfile &7(Right Click)");
 
-        item.setLore("&7Rank: "+ gamePlayer.getRank().getFormatted(),"&7Level: &e"+ gamePlayer.getLevel());
-        item.setOnClick(new Item.click() {
-            @Override
-            public void run(Player p) {
-                p.openInventory(ProfileMenu.getMenu(p));
-            }
-        });
+        if(inMenu)
+            item.setLore(
+                    "&7Rank: "+ gamePlayer.getRank().getFormatted(),
+                    "&7Level: &e"+ gamePlayer.getLevel(),
+                    "&7Tokens: &e"+gamePlayer.getTokens(),
+                    "&7Badges: ",
+                    gamePlayer.getBadgeList()
+            );
+        if(!inMenu)item.setLore("&eClick to open");
+        item.setOnClick(p -> p.openInventory(ProfileMenu.getMenu(p)));
         return item;
     }
 

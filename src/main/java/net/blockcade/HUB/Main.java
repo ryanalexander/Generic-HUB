@@ -1,16 +1,17 @@
+
 /*
  *
- *  *
- *  * © Stelch Software 2019, distribution is strictly prohibited
- *  * Blockcade is a company of Stelch Software
- *  *
- *  * Changes to this file must be documented on push.
- *  * Unauthorised changes to this file are prohibited.
- *  *
- *  * @author Ryan Wood
- *  @since 5/8/2019
+ *
+ *  © Stelch Software 2020, distribution is strictly prohibited
+ *  Blockcade is a company of Stelch Software
+ *
+ *  Changes to this file must be documented on push.
+ *  Unauthorised changes to this file are prohibited.
+ *
+ *  @author Ryan W
+ * @since (DD/MM/YYYY) 18/1/2020
  */
-//no u
+
 package net.blockcade.HUB;
 
 import net.blockcade.HUB.Commands.QueueCommand;
@@ -21,6 +22,7 @@ import net.blockcade.HUB.Common.GamePlayer;
 import net.blockcade.HUB.Common.Static.GameSearch;
 import net.blockcade.HUB.Common.Static.RankManager;
 import net.blockcade.HUB.Common.Utils.*;
+import net.blockcade.HUB.Common.Utils.NPC.NPCEntity;
 import net.blockcade.HUB.Common.Utils.Particles.ParticleManager;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
@@ -58,6 +60,7 @@ public class Main extends JavaPlugin {
          */
         PluginManager pm = getServer().getPluginManager();
         pm.registerEvents(new net.blockcade.HUB.Common.Events.Player(),this);
+        pm.registerEvents(new NPCEntity(this),this);
         pm.registerEvents(new Item(), this);
 
         // Initialize ranks

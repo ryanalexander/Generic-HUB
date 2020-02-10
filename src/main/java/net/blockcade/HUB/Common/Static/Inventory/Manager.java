@@ -1,3 +1,16 @@
+/*
+ *
+ *
+ *  © Stelch Software 2020, distribution is strictly prohibited
+ *  Blockcade is a company of Stelch Software
+ *
+ *  Changes to this file must be documented on push.
+ *  Unauthorised changes to this file are prohibited.
+ *
+ *  @author Ryan W
+ * @since (DD/MM/YYYY) 18/1/2020
+ */
+
 package net.blockcade.HUB.Common.Static.Inventory;
 
 import net.blockcade.HUB.Common.GamePlayer;
@@ -34,7 +47,7 @@ public class Manager {
         for(int i=9;i<18;i++){ inventory.setItem(i,placeholder.spigot()); }
 
         inventory.setItem(3, FriendsMenu.getMenuItem().spigot());
-        inventory.setItem(4, ProfileMenu.getMenuItem(player.spigot()).spigot());
+        inventory.setItem(4, ProfileMenu.getMenuItem(player.spigot(),true).spigot());
         inventory.setItem(5,party.spigot());
 
     }

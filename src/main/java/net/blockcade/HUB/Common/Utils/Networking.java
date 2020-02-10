@@ -1,5 +1,18 @@
 /*
  *
+ *
+ *  © Stelch Software 2020, distribution is strictly prohibited
+ *  Blockcade is a company of Stelch Software
+ *
+ *  Changes to this file must be documented on push.
+ *  Unauthorised changes to this file are prohibited.
+ *
+ *  @author Ryan W
+ * @since (DD/MM/YYYY) 18/1/2020
+ */
+
+/*
+ *
  *  *
  *  * © Stelch Software 2019, distribution is strictly prohibited
  *  * Blockcade is a company of Stelch Software
@@ -95,7 +108,7 @@ public class Networking {
             public void run() {
                 pushData();
             }
-        }.runTaskTimer(plugin, 0L, (20 * 5));
+        }.runTaskTimer(plugin, 0L, (10));
     }
 
     public String getContainer() {
