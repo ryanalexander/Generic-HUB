@@ -141,9 +141,9 @@ public class ScoreboardManager {
                     int e = (experience) * (experience_required / 25);
                     String level = "&a&l";
                     for(int i=0;i<10;i++){
+                        level += (i>(e/10)?"-":"◆");
                         if(i==(e/10))
                             level+="&7&l";
-                        level += (i>(e/10)?"◆":"-");
                     }
 
                     text=text.replaceAll(":player_count:", Bukkit.getServer().getOnlinePlayers().size() + "")

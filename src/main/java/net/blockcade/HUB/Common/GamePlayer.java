@@ -289,11 +289,13 @@ public class GamePlayer {
                 this.experience=results.getInt("experience");
                 this.tokens=results.getInt("tokens");
                 this.uuid=(UUID.fromString(results.getString("uuid")));
-                for(String s : results.getString("badges").split("[|]")){
-                    try {
-                        badges.add(Badge.valueOf(s.toUpperCase()));
-                    }catch (Exception e){
-                        e.printStackTrace();
+                if(results.getString("badges")!=null) {
+                    for (String s : results.getString("badges").split("[|]")) {
+                        try {
+                            badges.add(Badge.valueOf(s.toUpperCase()));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 if(this.player!=null&&this.player.isOnline())this.preferenceSettings=new PreferenceSettings(this);
