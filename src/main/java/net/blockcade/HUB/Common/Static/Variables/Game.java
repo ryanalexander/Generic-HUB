@@ -19,6 +19,7 @@ import org.bukkit.Material;
 public enum Game {
     BEDBATTLES(Material.RED_BED,"Bed Battles","&fFight to defend your bed\nand be the last player standing.","BBW",ChatColor.RED,16),
     ARENA(Material.GOLDEN_SWORD, "Arena","Free for all PvP\nwith upgrades & abilities", "AR",ChatColor.RED,100),
+    FACTIONS(Material.GRASS,"Factions","The Factions you know and love.","FAC",ChatColor.GREEN,500),
     TESTING(Material.BOW,"Testing","testing gamemode","TEST",ChatColor.WHITE,100),
     POKE(Material.AIR,"Pokemon","","POKE",ChatColor.YELLOW,100),
     HUB(Material.CLOCK,"HUB","","HUB",ChatColor.WHITE,25);

@@ -68,31 +68,29 @@ public class GameMenu {
             if(game==Game.HUB)continue;
             if(game==Game.POKE)continue;
             Item gameItem = new Item(game.getMaterial(),game.getColor()+game.getName());
-            gameItem.setOnClick(new Item.click() {
-                @Override
-                public void run(Player p) {
-                    Main.GamePlayers.get(p).joinQueue(game);
-                    p.openInventory(GameMenu.getMenu(p));
-                }
+            gameItem.setOnClick(p -> {
+                Main.GamePlayers.get(p).joinQueue(game);
+                p.openInventory(GameMenu.getMenu(p));
             });
             gameItem.setLore(game.getDescription().split("\n"));
-            inventory.setItem(inventory_pos,gameItem.spigot());
-            inventory_pos++;
+            if(game==Game.FACTIONS){
+                inventory.setItem(30,gameItem.spigot());
+            }else {
+                inventory.setItem(inventory_pos,gameItem.spigot());
+                inventory_pos++;
+            }
         }
         if(Main.Searching.containsKey(Main.GamePlayers.get(player))) {
             Item cancelSearch = new Item(Material.BARRIER, "&cCancel Search");
-            cancelSearch.setLore(new String[]{"", "&aClicking this will cancel", String.format("&ayour search for &e%s&a.", (Main.Searching.containsKey(Main.GamePlayers.get(player)) ? Main.Searching.get(Main.GamePlayers.get(player)).getGame().getName() : "null")), ""});
-            cancelSearch.setOnClick(new Item.click() {
-                @Override
-                public void run(Player p) {
-                    if (Main.Searching.containsKey(Main.GamePlayers.get(p))) {
-                        Main.Searching.get(Main.GamePlayers.get(p)).stop();
-                        p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 0.5f);
-                        p.getOpenInventory().close();
-                    } else {
-                        p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 0.5f);
-                        p.getOpenInventory().close();
-                    }
+            cancelSearch.setLore("", "&aClicking this will cancel", String.format("&ayour search for &e%s&a.", (Main.Searching.containsKey(Main.GamePlayers.get(player)) ? Main.Searching.get(Main.GamePlayers.get(player)).getGame().getName() : "null")), "");
+            cancelSearch.setOnClick(p -> {
+                if (Main.Searching.containsKey(Main.GamePlayers.get(p))) {
+                    Main.Searching.get(Main.GamePlayers.get(p)).stop();
+                    p.playSound(p.getLocation(), Sound.BLOCK_NOTE_BLOCK_PLING, 0.5f, 0.5f);
+                    p.getOpenInventory().close();
+                } else {
+                    p.playSound(p.getLocation(), Sound.ENTITY_VILLAGER_NO, 0.5f, 0.5f);
+                    p.getOpenInventory().close();
                 }
             });
             inventory.setItem(inventory.getSize()-1, cancelSearch.spigot());
